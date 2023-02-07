@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EnoRegV2.Properties
+namespace EnoregV2.Properties
 {
 
 
