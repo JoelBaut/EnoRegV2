@@ -32,14 +32,8 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button x:Name="btnFiltros"  HorizontalAlignment="Left" Margin="27,22,30,0" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Top" Click="btnFiltros_Click" >
+            <Button x:Name="btnFiltros"  HorizontalAlignment="Left" Margin="27,22,30,0" Grid.Row="0" VerticalAlignment="Top" Click="btnFiltros_Click" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridFiltros">
@@ -53,7 +47,7 @@
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnExportarInforme"  HorizontalAlignment="Left" Margin="27,60,30,0" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" >
+            <Button x:Name="btnExportarInforme"  HorizontalAlignment="Left" Margin="27,0" Grid.Row="1" VerticalAlignment="Top" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridExportarInformeRegistro">
@@ -67,7 +61,7 @@
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnEntrada"  HorizontalAlignment="Left" Margin="27,260,30,0" Grid.Row="3" Grid.RowSpan="7" VerticalAlignment="Top" SizeChanged="CambiarFormatoBoton" Click="btnEntrada_Click">
+            <Button x:Name="btnEntrada"  HorizontalAlignment="Left" Margin="27,0" Grid.Row="3" VerticalAlignment="Top" SizeChanged="CambiarFormatoBoton" Click="btnEntrada_Click">
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridEntrada">
@@ -81,7 +75,7 @@
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnSalida"  HorizontalAlignment="Left" Margin="27,350,30,0" Grid.Row="3" Grid.RowSpan="8" VerticalAlignment="Top" Click="btnSalida_Click">
+            <Button x:Name="btnSalida"  HorizontalAlignment="Left" Margin="27,0" Grid.Row="3" VerticalAlignment="Bottom" Click="btnSalida_Click">
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridSalida">
@@ -96,13 +90,13 @@
                 </Button.Content>
             </Button>
         </Grid>
-        <Grid Margin="0,5,0,10" Grid.Row="1" x:Name="gridProductoBotones" Visibility="Hidden">
+        <Grid Margin="0,5,0,10" Grid.Row="1" x:Name="gridProductoBotones"  Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Button x:Name="btnInformeProducto"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="27,38,30,0" >
+            <Button x:Name="btnInformeProducto"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="27,0" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridExportarInformeProducto">
@@ -116,7 +110,7 @@
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnannadirProducto"  HorizontalAlignment="Center" Margin="27,10,30,0" VerticalAlignment="Top" Grid.Row="2" Click="btnannadirProducto_Click" >
+            <Button x:Name="btnannadirProducto"  HorizontalAlignment="Center" Margin="27,0" VerticalAlignment="Bottom" Grid.Row="2" Click="btnannadirProducto_Click" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridProducto">
