@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnoregV2.Persistencia
+namespace EnoregV2.Dominio
 {
-    internal class LoteDao
+    internal class Producto
     {
     }
 }
