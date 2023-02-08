@@ -35,8 +35,43 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Edm, Version=7.14.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OData.Edm.7.14.0\lib\net45\Microsoft.OData.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.32.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\MySQL\MySQL Connector NET 8.0.32\Assemblies\v4.5.2\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.5.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.7.2\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.4.6.0\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,27 +90,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AnnadirEntrada.xaml.cs">
+    <Compile Include="Dominio\ConexionDB.cs" />
+    <Compile Include="Persistencia\Entrada.cs" />
+    <Compile Include="Persistencia\Lote.cs" />
+    <Compile Include="Persistencia\LoteDao.cs" />
+    <Compile Include="Persistencia\Producto.cs" />
+    <Compile Include="Persistencia\ProductoDAO.cs" />
+    <Compile Include="Persistencia\Registro.cs" />
+    <Compile Include="Persistencia\Salida.cs" />
+    <Compile Include="Presentacion\AnnadirEntrada.xaml.cs">
       <DependentUpon>AnnadirEntrada.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AnnadirSalida.xaml.cs">
+    <Compile Include="Presentacion\AnnadirSalida.xaml.cs">
       <DependentUpon>AnnadirSalida.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VentanaAddProducto.xaml.cs">
+    <Compile Include="Presentacion\VentanaAddProducto.xaml.cs">
       <DependentUpon>VentanaAddProducto.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VentanaRegistros.xaml.cs">
+    <Compile Include="Presentacion\VentanaRegistros.xaml.cs">
       <DependentUpon>VentanaRegistros.xaml</DependentUpon>
     </Compile>
-    <Page Include="AnnadirEntrada.xaml">
+    <Page Include="Presentacion\AnnadirEntrada.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AnnadirSalida.xaml">
+    <Page Include="Presentacion\AnnadirSalida.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="VentanaFiltros.xaml">
+    <Page Include="Presentacion\VentanaFiltros.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,14 +126,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VentanaFiltros.xaml.cs">
+    <Compile Include="Presentacion\VentanaFiltros.xaml.cs">
       <DependentUpon>VentanaFiltros.xaml</DependentUpon>
     </Compile>
-    <Page Include="VentanaAddProducto.xaml">
+    <Page Include="Presentacion\VentanaAddProducto.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VentanaRegistros.xaml">
+    <Page Include="Presentacion\VentanaRegistros.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -113,24 +156,26 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="VentanaRegistros.csproj" />
+    <None Include="Presentacion\VentanaRegistros.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Imagenes\CrearProducto.png" />
-    <Resource Include="Imagenes\Filtros2.png" />
-    <Resource Include="Imagenes\informes.png" />
-    <Resource Include="Imagenes\logoDptoIndAli.jpg" />
-    <Resource Include="Imagenes\logoIES.png" />
-    <Resource Include="Imagenes\minus.png" />
-    <Resource Include="Imagenes\plus.png" />
-    <Resource Include="Imagenes\productos.png" />
+    <Resource Include="Presentacion\Imagenes\CrearProducto.png" />
+    <Resource Include="Presentacion\Imagenes\Filtros2.png" />
+    <Resource Include="Presentacion\Imagenes\informes.png" />
+    <Resource Include="Presentacion\Imagenes\logoDptoIndAli.jpg" />
+    <Resource Include="Presentacion\Imagenes\logoIES.png" />
+    <Resource Include="Presentacion\Imagenes\minus.png" />
+    <Resource Include="Presentacion\Imagenes\plus.png" />
+    <Resource Include="Presentacion\Imagenes\productos.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
