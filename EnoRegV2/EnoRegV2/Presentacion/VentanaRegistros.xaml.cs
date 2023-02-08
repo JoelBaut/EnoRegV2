@@ -86,30 +86,23 @@ namespace VentanaRegistros
         {
             if (btnEntrada.ActualWidth < ActualWidth * 0.08)
             {
-                txbEntrada.Visibility = Visibility.Hidden;
+                txbEntrada.Visibility = Visibility.Collapsed;
                 imgEntrada.SetValue(Grid.ColumnSpanProperty, 2);
-                imgEntrada.Margin = new Thickness(0,0,40,0);
 
-
-                txbSalida.Visibility = Visibility.Hidden;
+                txbSalida.Visibility = Visibility.Collapsed;
                 imgSalida.SetValue(Grid.ColumnSpanProperty, 2);
-                imgSalida.Margin = new Thickness(0, 0, 40, 0);
 
-                txbFiltros.Visibility = Visibility.Hidden;
+                txbFiltros.Visibility = Visibility.Collapsed;
                 imgFiltros.SetValue(Grid.ColumnSpanProperty, 2);
-                imgFiltros.Margin = new Thickness(0, 0, 40, 0);
 
-                txbInformeRegistro.Visibility = Visibility.Hidden;
+                txbInformeRegistro.Visibility = Visibility.Collapsed;
                 imgInformeRegistro.SetValue(Grid.ColumnSpanProperty, 2);
-                imgInformeRegistro.Margin = new Thickness(0, 0, 40, 0);
 
-                txbInformeProducto.Visibility = Visibility.Hidden;
+                txbInformeProducto.Visibility = Visibility.Collapsed;
                 imgInformeProducto.SetValue(Grid.ColumnSpanProperty, 2);
-                imgInformeProducto.Margin = new Thickness(0, 0, 40, 0);
 
-                txbAnnadirProducto.Visibility = Visibility.Hidden;
+                txbAnnadirProducto.Visibility = Visibility.Collapsed;
                 imgAnnadirProducto.SetValue(Grid.ColumnSpanProperty, 2);
-                imgAnnadirProducto.Margin = new Thickness(0, 0, 40, 0);
             }
             else {
                 txbEntrada.Visibility = Visibility.Visible;

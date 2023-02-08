@@ -28,26 +28,27 @@
         </Grid>
         <Grid x:Name="gridRegistroBotones" Grid.Row="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Button x:Name="btnFiltros"  HorizontalAlignment="Left" Margin="27,22,30,0" Grid.Row="0" VerticalAlignment="Top" Click="btnFiltros_Click" >
+            <Button x:Name="btnFiltros" Height="50"  Margin="27,10" Grid.Row="0"  Click="btnFiltros_Click" VerticalAlignment="Top" >
                 <Button.Content>
-                    <Viewbox Height="50" Width="250">
+                    <Viewbox Height="50" Width="250" >
                         <Grid x:Name="gridFiltros">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image x:Name="imgFiltros" Source="Imagenes/Filtros2.png" Height="25" Width="38"/>
-                            <TextBlock x:Name="txbFiltros" FontWeight="Bold" Foreground="Black" Text="Filtros" Height="25" FontSize="10" Margin="5,4,1,1" Width="99" Grid.Column="1"/>
+                            <TextBlock x:Name="txbFiltros" FontWeight="Bold" Foreground="Black" Text="Filtros" Height="25" FontSize="10" Margin="5,4,1,1" Grid.Column="1"/>
                         </Grid>
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnExportarInforme"  HorizontalAlignment="Left" Margin="27,0" Grid.Row="1" VerticalAlignment="Top" >
+            <Button x:Name="btnExportarInforme"  Margin="27,10" Grid.Row="1" Height="50" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridExportarInformeRegistro">
@@ -56,12 +57,12 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image x:Name="imgInformeRegistro" Source="Imagenes/informes.png" Height="25" Width="38"/>
-                            <TextBlock x:Name="txbInformeRegistro" FontWeight="Bold" Foreground="Black" Text="Exportar Informe" Height="25" FontSize="10" Margin="5,4,1,1" Width="99" Grid.Column="1"/>
+                            <TextBlock x:Name="txbInformeRegistro" FontWeight="Bold" Foreground="Black" Text="Exportar Informe" Height="25" FontSize="10" Margin="5,4,1,1" Grid.Column="1"/>
                         </Grid>
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnEntrada"  HorizontalAlignment="Left" Margin="27,0" Grid.Row="3" VerticalAlignment="Top" SizeChanged="CambiarFormatoBoton" Click="btnEntrada_Click">
+            <Button x:Name="btnEntrada" Margin="27,10" Grid.Row="3" Height="50" SizeChanged="CambiarFormatoBoton" Click="btnEntrada_Click">
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridEntrada">
@@ -70,12 +71,12 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image x:Name="imgEntrada" Source="Imagenes/plus.png" Height="25" Width="38"/>
-                            <TextBlock x:Name="txbEntrada" FontWeight="Bold" Foreground="Black" Text="Entrada" Height="25" FontSize="10" Margin="5,4,1,1" Width="99" Grid.Column="1"/>
+                            <TextBlock x:Name="txbEntrada" FontWeight="Bold" Foreground="Black" Text="Entrada" Height="25" FontSize="10" Margin="5,4,1,1"  Grid.Column="1"/>
                         </Grid>
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnSalida"  HorizontalAlignment="Left" Margin="27,0" Grid.Row="3" VerticalAlignment="Bottom" Click="btnSalida_Click">
+            <Button x:Name="btnSalida" Margin="27,10" Height="50" Grid.Row="4"  Click="btnSalida_Click">
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridSalida">
@@ -84,7 +85,7 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image x:Name="imgSalida" Source="Imagenes/minus.png" Height="25" Width="38"/>
-                            <TextBlock x:Name="txbSalida" FontWeight="Bold" Foreground="Black" Text="Salida" Height="25" FontSize="10" Margin="5,4,1,1" Width="99" Grid.Column="1"/>
+                            <TextBlock x:Name="txbSalida" FontWeight="Bold" Foreground="Black" Text="Salida" Height="25" FontSize="10" Margin="5,4,1,1" Grid.Column="1"/>
                         </Grid>
                     </Viewbox>
                 </Button.Content>
@@ -96,7 +97,7 @@
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Button x:Name="btnInformeProducto"  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="27,0" >
+            <Button x:Name="btnInformeProducto"  VerticalAlignment="Top" Margin="27,0" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridExportarInformeProducto">
@@ -105,12 +106,12 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image x:Name="imgInformeProducto" Source="Imagenes/informes.png" Height="25" Width="38"/>
-                            <TextBlock x:Name="txbInformeProducto" FontWeight="Bold" Foreground="Black" Text="Exportar Informe" Height="25" FontSize="10" Margin="5,4,1,1" Width="99" Grid.Column="1"/>
+                            <TextBlock x:Name="txbInformeProducto" FontWeight="Bold" Foreground="Black" Text="Exportar Informe" Height="25" FontSize="10" Margin="5,4,1,1" Grid.Column="1"/>
                         </Grid>
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnannadirProducto"  HorizontalAlignment="Center" Margin="27,0" VerticalAlignment="Bottom" Grid.Row="2" Click="btnannadirProducto_Click" >
+            <Button x:Name="btnannadirProducto"  Margin="27,0" VerticalAlignment="Bottom" Grid.Row="2" Click="btnannadirProducto_Click" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridProducto">
@@ -119,7 +120,7 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image x:Name="imgAnnadirProducto" Source="Imagenes/CrearProducto.png" Height="25" Width="38"/>
-                            <TextBlock x:Name="txbAnnadirProducto" FontWeight="Bold" Foreground="Black" Text="Producto" Height="25" FontSize="10" Margin="5,4,1,1" Width="99" Grid.Column="1"/>
+                            <TextBlock x:Name="txbAnnadirProducto" FontWeight="Bold" Foreground="Black" Text="Producto" Height="25" FontSize="10" Margin="5,4,1,1"  Grid.Column="1"/>
                         </Grid>
                     </Viewbox>
                 </Button.Content>
