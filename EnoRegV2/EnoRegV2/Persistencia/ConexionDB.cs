@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
-namespace EnoregV2.Dominio
+namespace EnoregV2.Persistencia
 {
     internal class ConexionDB
     {
