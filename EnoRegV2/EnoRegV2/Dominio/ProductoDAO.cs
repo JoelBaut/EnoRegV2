@@ -1,11 +1,13 @@
 ﻿using EnoregV2.Persistencia;
-using MySql.Data.MySqlClient;
+using MySqlConnector.Data.MySqlClient;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace EnoregV2.Dominio
 {
@@ -66,7 +68,9 @@ namespace EnoregV2.Dominio
         /// <param name="image">The image.</param>
         public void InsertarProducto(String nombre, string unidad, byte[] image)
         {
-
+            Producto p = new Producto();
+            p.Nombre= nombre;
+            p.Unidad= unidad;
             string sql = "INSERT INTO `producto`(`nombre`, `unidad`, `imagen`) VALUES ('" + nombre + "', '" + unidad + "',@pic);";
 
             conexionDB.InsertarProducto(sql, image);
