@@ -36,7 +36,6 @@ namespace EnoregV2.Dominio
             unidad = un;
             stock = st;
         }
-
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public string Unidad { get => unidad; set => unidad = value; }
