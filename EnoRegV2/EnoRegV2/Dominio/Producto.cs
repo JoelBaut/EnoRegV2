@@ -13,13 +13,13 @@ namespace EnoregV2.Dominio
         private string nombre;
         private string unidad;
         private Double stock;
-        private Bitmap imagen;
+        private byte[] imagen;
 
 
         public Producto() { 
         
         }
-        public Producto(int i,string nom,string un,Double st,Bitmap image)
+        public Producto(int i,string nom,string un,Double st,byte[] image)
         {
             id = i;
             nombre = nom;
