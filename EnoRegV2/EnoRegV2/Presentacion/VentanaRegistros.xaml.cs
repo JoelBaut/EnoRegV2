@@ -1,7 +1,11 @@
 ﻿using EnoregV2;
+using EnoregV2.Dominio;
 using EnoReV2;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +25,12 @@ namespace VentanaRegistros
     /// </summary>
     public partial class VentanaRegistro : Window
     {
+        ProductoDAO p = null;
         public VentanaRegistro()
         {
             InitializeComponent();
             btnRegistro.IsEnabled = false;
+            p = new ProductoDAO();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -151,8 +157,43 @@ namespace VentanaRegistros
 
         private void btnannadirProducto_Click(object sender, RoutedEventArgs e)
         {
-            VentanaAddProducto ventanaAddProducto = new VentanaAddProducto();
+            VentanaAddProducto ventanaAddProducto = new VentanaAddProducto(this);
             ventanaAddProducto.Show();
+        }
+
+        private void dtgProductos_Loaded(object sender, RoutedEventArgs e)
+        {
+            CargaDataGrid();
+        }
+        public void CargaDataGrid() 
+        {
+            DataTable dt = new DataTable();
+            dt.Load(p.CargarListaProductos());
+            dtgProductos.ItemsSource = dt.DefaultView;
+            p.cerrarConexion();
+        }        
+        private void dtgProductos_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            //CONTINUA; NO CARGA IMAGEN
+            Producto pro = (Producto)dtgProductos.SelectedItem;
+            MySqlDataReader dataReader = p.CargarImagen(pro);
+            if (dataReader.Read())
+            {
+                // recuperamos la imagen...
+                pro.Imagen = (byte[])dataReader["imagen"];
+                MemoryStream ms = new System.IO.MemoryStream(pro.Imagen);
+                BitmapImage image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.StreamSource = ms;
+                imgProductos.Source = image;
+                image.EndInit();
+            }
+            else
+            {
+                imgProductos.Source = null;
+            }
+
         }
     }
 }

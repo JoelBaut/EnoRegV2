@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace EnoregV2.Dominio
 {
     internal class Lote
-    {
-        private 
+    { 
         private int idProducto;
         private DateTime fechaCaducidad;
         private double stock;

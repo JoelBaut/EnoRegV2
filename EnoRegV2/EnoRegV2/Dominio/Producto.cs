@@ -20,24 +20,20 @@ namespace EnoregV2.Dominio
         public Producto() { 
         
         }
-        public Producto(int i,string nom,string un,Double st, byte[] image)
+        public Producto(string nom,string un,Double st, byte[] image)
         {
-            id = i;
             nombre = nom;
             unidad = un;
             stock = st;
             imagen = image;
         }
 
-        public Producto(int i, string nom, string un, Double st)
+        public Producto(string nom, string un, Double st)
         {
-            id = i;
             nombre = nom;
             unidad = un;
             stock = st;
         }
-
-        public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public string Unidad { get => unidad; set => unidad = value; }
         public double Stock { get => stock; set => stock = value; }

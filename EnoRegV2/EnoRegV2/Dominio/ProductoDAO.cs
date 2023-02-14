@@ -75,26 +75,26 @@ namespace EnoregV2.Dominio
         /// Metodo comprobado, Se modifica la insercion a insertar mediante un objeto de tipo producto. Si el producto tiene una imagen
         /// se inserta con ella si no no.
         /// </summary>
-        /// <param name="p">Parametro con un objeto de tipo Producto</param>
+        /// <param name="p">Parametro con un objeto de tipo Producto</param>       
         public void InsertarProducto(Producto p)
         {
-            string sql = "INSERT INTO `producto`(`nombre`, `unidad`, `imagen`) VALUES ('" + p.Nombre + "', '" + p.Unidad + "',@pic);";
-            if (p.Imagen == null)
-            {
-                conexionDB.InsertarProducto(sql);
-            }
-            else
-            {
-                conexionDB.InsertarProducto(sql, p.Imagen);
-            }
+            string sql = "INSERT INTO `producto`(`nombre`, `unidad`, `imagen`) VALUES ('" + p.Nombre + "', '" + p.Unidad + "',@pic);";           
+                conexionDB.InsertarProducto(sql, p.Imagen);            
+        }
+        internal void InsertarProducto(string nombre, string unidad)
+        {
+
+            string sql = "INSERT INTO `producto`(`nombre`, `unidad`) VALUES ('" + nombre + "', '" + unidad + "');";
+
+            conexionDB.InsertarProducto(sql);
         }
         /// <summary>
         /// Metodo para Cargar productos a la hora de tener una lista de productos
         /// </summary>
         /// <returns>devuelve un MySqlDataReader con todos los datos</returns>
-        public MySqlDataReader Cargarproductos()
+        public MySqlDataReader CargarListaProductos()
         {
-            string sql = "Select id_producto,nombre from producto";
+            string sql = "Select id_producto,nombre,unidad,stock from producto";
             return conexionDB.Select(sql);
 
         }
@@ -103,12 +103,41 @@ namespace EnoregV2.Dominio
         /// </summary>
         /// <param name="p"></param>
         /// <returns>devuelve un MySqlDataReader con todos los datos</returns>
-        public MySqlDataReader CargarNombres(Producto p)
+        public MySqlDataReader CargarNombres()
+        {
+            string sql = "Select id,nombre,unidad,stock from producto";
+            return conexionDB.Select(sql);
+
+        }
+        public MySqlDataReader CargarUnidad()
+        {
+            string sql = "Select unidad from producto";
+            return conexionDB.Select(sql);
+
+        }
+        public MySqlDataReader CargarProductos(Producto p)
         {
             string sql = "Select nombre from producto where nombre='" + p.Nombre + "'";
             return conexionDB.Select(sql);
 
         }
+        public Boolean CompruebaProductos(String nombre)
+        {
+            Boolean existe = false;
+            string sql = "Select nombre from producto where nombre='" + nombre + "'";
+            MySqlDataReader datos = conexionDB.Select(sql);
+            if (datos.Read())
+            {
+                existe = true;
+            }
+            else
+            {
+                existe = false;
+            }
+            return existe;
+
+        }
+
         /// <summary>
         /// Metodo para cargar la imagen de un producto
         /// </summary>
@@ -119,6 +148,7 @@ namespace EnoregV2.Dominio
             string sql = "Select imagen from producto where nombre = '" + p.Nombre + "'";
             return conexionDB.Select(sql);
         }
+
         /// <summary>
         /// PENDIENTE DE HACER FILTROS
         /// </summary>
