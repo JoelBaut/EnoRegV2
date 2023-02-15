@@ -2,6 +2,7 @@
 using EnoregV2.Dominio;
 using EnoReV2;
 using MySql.Data.MySqlClient;
+using MySql.Data.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -179,28 +181,20 @@ namespace VentanaRegistros
         }        
         private void dtgProductos_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            //CONTINUA; NO CARGA IMAGEN
             string text="";
-            int row = dtgProductos.SelectedIndex;
-            
+            string ids = "";
+            int row = dtgProductos.SelectedIndex;            
             DataGridRow columna = (DataGridRow)dtgProductos.ItemContainerGenerator.ContainerFromIndex(row);                
             text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
-               
-
-            //MessageBox.Show(nombre + " " + unidad, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            Producto pro = new Producto(text,null,0);
-            
+            ids= ((TextBlock)dtgProductos.Columns[0].GetCellContent(columna)).Text;
+            int id = int.Parse(ids);
+            Producto pro = new Producto(id,text);            
             if (pro == null)
             {
                 MessageBox.Show("La fila seleccionada no es un producto válido.");
                 return;
             }
-
-            // Ahora 'selectedProducto' es un objeto de tipo 'Producto' que representa la fila seleccionada en el 'DataGrid'.
-            // Puedes usarlo según tus necesidades.
-
-            MySqlDataReader data = p.CargarImagen(pro);
-            
+            MySqlDataReader data = p.CargarImagen(pro);            
             if (data.Read())
             {
                 try
@@ -225,7 +219,18 @@ namespace VentanaRegistros
                     imgProductos.Source = null;
                 }
              
+            }           
+            try
+            {
+                DataTable dt = new DataTable();
+                dt.Load(p.CargarLotes(pro));
+                dtgLotes.ItemsSource = dt.DefaultView;
+                p.cerrarConexion();
             }
-        }
+            catch (MySqlConversionException es)
+            {
+                
+            }
+    }
     }
 }
