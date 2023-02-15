@@ -9,19 +9,25 @@ namespace EnoregV2.Dominio
 {
     internal class Lote
     {
+        private string codigoLote;
         private int idProducto;
-        private DateTime fechaCaducidad;
-        private double stock;
-
-        public Lote(int idProducto, DateTime fechaCaducidad, double stock)
+        private string fechaCaducidad;
+        public Lote(string codLote,int idProd, string fechaCaducidad)
         {
-            this.idProducto = idProducto;
+            this.codigoLote= codLote;
+            this.idProducto = idProd;
             this.fechaCaducidad = fechaCaducidad;
-            this.stock = stock;
         }
 
+        public Lote(string codLote,int idProd)
+        {
+            this.codigoLote= codLote;
+            this.idProducto = idProd;
+        }
+
+
         public int IdProducto { get => idProducto; set => idProducto = value; }
-        public DateTime FechaCaducidad { get => fechaCaducidad; set => fechaCaducidad = value; }
-        public double Stock { get => stock; set => stock = value; }
+        public string CodigoLote { get => codigoLote; set => codigoLote = value; }
+        public string FechaCaducidad { get => fechaCaducidad; set => fechaCaducidad = value; }
     }
 }
