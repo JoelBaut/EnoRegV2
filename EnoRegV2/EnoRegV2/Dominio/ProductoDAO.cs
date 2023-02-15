@@ -1,4 +1,5 @@
 ﻿using EnoregV2.Persistencia;
+
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace EnoregV2.Dominio
 {
+
     /// <summary>
     /// Clase que se encarga de enlazar la Base de datos con las vistas y que hace de intermedio para ejecutar las consultas
     /// </summary>
