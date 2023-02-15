@@ -25,11 +25,9 @@ namespace EnoregV2.Dominio
         {
             this.nombre = nom;
         }
-        public Producto(int i,string nom,string un,Double st,byte[] image)
-
- public Producto(String nom)
+        public Producto(int i, string nom, string un, Double st, byte[] image)
         {
-            this.nombre = nom;
+
         }
         public Producto(int ids,string nom)
         {
