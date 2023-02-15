@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EnoregV2.Dominio
 {
-    internal class Producto
+    public class Producto
     {
         private int id;
         private string nombre;
@@ -18,6 +18,10 @@ namespace EnoregV2.Dominio
 
         public Producto() { 
         
+        }
+        public Producto(String nom)
+        {
+            this.nombre = nom;
         }
         public Producto(int i,string nom,string un,Double st,byte[] image)
         {
@@ -32,6 +36,6 @@ namespace EnoregV2.Dominio
         public string Nombre { get => nombre; set => nombre = value; }
         public string Unidad { get => unidad; set => unidad = value; }
         public double Stock { get => stock; set => stock = value; }
-        public Bitmap Imagen { get => imagen; set => imagen = value; }
+        public byte[] Imagen { get => imagen; set => imagen = value; }
     }
 }
