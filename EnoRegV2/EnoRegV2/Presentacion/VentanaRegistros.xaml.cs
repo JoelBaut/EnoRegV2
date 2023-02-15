@@ -4,6 +4,7 @@ using EnoReV2;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace VentanaRegistros
 {
     /// <summary>
@@ -172,10 +175,34 @@ namespace VentanaRegistros
             dtgProductos.ItemsSource = dt.DefaultView;
             p.cerrarConexion();
         }        
-        private void dtgProductos_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        private void dtgProductos_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             //CONTINUA; NO CARGA IMAGEN
-            Producto pro = (Producto)dtgProductos.SelectedItem;
+            string text="";
+            int row = dtgProductos.SelectedIndex;
+            if (row == 0)
+            {
+                MessageBox.Show("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+            }
+            else
+            {
+               DataGridRow columna = (DataGridRow)dtgProductos.ItemContainerGenerator.ContainerFromIndex(row);                
+               text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
+               
+
+            }
+
+            //MessageBox.Show(nombre + " " + unidad, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Producto pro = new Producto(text,null,0);
+            if (pro == null)
+            {
+                MessageBox.Show("La fila seleccionada no es un producto válido.");
+                return;
+            }
+
+            // Ahora 'selectedProducto' es un objeto de tipo 'Producto' que representa la fila seleccionada en el 'DataGrid'.
+            // Puedes usarlo según tus necesidades.
+
             MySqlDataReader dataReader = p.CargarImagen(pro);
             if (dataReader.Read())
             {

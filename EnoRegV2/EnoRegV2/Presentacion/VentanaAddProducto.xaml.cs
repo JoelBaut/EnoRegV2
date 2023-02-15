@@ -61,7 +61,7 @@ namespace EnoregV2
                 imagen.BeginInit();
                 imagen.UriSource = new Uri(openFileDialog.FileName);
                 ImgImagen.Source = imagen;
-                imagen.EndInit();
+                imagen.EndInit();                
             }
         }
 
