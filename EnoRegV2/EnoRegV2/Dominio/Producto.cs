@@ -20,6 +20,11 @@ namespace EnoregV2.Dominio
         public Producto() { 
         
         }
+        public Producto(int ids,string nom)
+        {
+            id = ids;
+            nombre = nom;
+        }
         public Producto(string nom,string un,Double st, byte[] image)
         {
             nombre = nom;

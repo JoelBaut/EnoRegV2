@@ -97,7 +97,7 @@ namespace EnoregV2.Dominio
         /// <returns>devuelve un MySqlDataReader con todos los datos</returns>
         public MySqlDataReader CargarListaProductos()
         {
-            string sql = "Select id_producto,nombre,unidad,stock from producto";
+            string sql = "Select id_producto 'Id Producto',nombre 'Nombre',unidad 'Unidad',stock 'Stock de Producto' from producto";
             return conexionDB.Select(sql);
 
         }
@@ -121,6 +121,12 @@ namespace EnoregV2.Dominio
         public MySqlDataReader CargarProductos(Producto p)
         {
             string sql = "Select nombre from producto where nombre='" + p.Nombre + "'";
+            return conexionDB.Select(sql);
+
+        }
+        public MySqlDataReader CargarLotes(Producto p)
+        {
+            string sql = "Select id_lote ID,id_producto 'ID Producto',lote 'Numero Lote',stock 'Stock Lote' from lote where id_producto='" + p.Id + "'";
             return conexionDB.Select(sql);
 
         }
