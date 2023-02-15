@@ -144,7 +144,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <DataGrid x:Name="dtgProductos" Margin="10" Grid.Column="0" d:ItemsSource="{d:SampleData ItemCount=5}"  />
+            <DataGrid x:Name="dtgProductos" Margin="10" ColumnWidth="*" Grid.Column="0" d:ItemsSource="{d:SampleData ItemCount=5}" Loaded="dtgProductos_Loaded" MinColumnWidth="22" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="dtgProductos_SelectionChanged_1"/>
             <DataGrid x:Name="dtgLotes" Grid.Column="1"  Margin="10" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="2" />
             <Border Height="187" Grid.Row="1" Width="208" BorderBrush="Black" BorderThickness="2">
                 <Image x:Name="imgProductos" />
