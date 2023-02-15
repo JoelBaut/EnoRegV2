@@ -1,8 +1,12 @@
 ﻿using EnoregV2;
+using EnoregV2.Dominio;
 using EnoReV2;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,13 +23,94 @@ namespace VentanaRegistros
     /// <summary>
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
+    /// 
     public partial class VentanaRegistro : Window
     {
+        public ProductoDAO productoDAO;
         public VentanaRegistro()
         {
             InitializeComponent();
             btnRegistro.IsEnabled = false;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            productoDAO = new ProductoDAO();
+            CargarDataGrid();
+            dtgprincipal.UpdateLayout();
+            recorrerjlist();
+        }
+
+        private void recorrerjlist()
+        {
+            for (int i = 0; i < dtgprincipal.Items.Count; i++)
+            {
+                DataGridRow fila = (DataGridRow)dtgprincipal.ItemContainerGenerator.ContainerFromIndex(i);
+                if (fila != null)
+                {
+
+                    DataGridCell celda1 = dtgprincipal.Columns[1].GetCellContent(fila).Parent as DataGridCell;
+                    TextBlock textBlock = celda1.Content as TextBlock;
+
+                    DataGridCell celda6 = dtgprincipal.Columns[6].GetCellContent(fila).Parent as DataGridCell;
+                    TextBlock textBlock6 = celda6.Content as TextBlock;
+
+                    DataGridCell celda7 = dtgprincipal.Columns[7].GetCellContent(fila).Parent as DataGridCell;
+                    TextBlock textBlock7 = celda7.Content as TextBlock;
+
+                    string nombre = textBlock.Text;
+                    MessageBox.Show(nombre);
+
+                }
+                /*
+                while (dr.Read())
+                {
+                    unidad = dr.GetString(0);
+                }
+                if (!textBlock6.Text.Equals("-"))
+                {
+                    textBlock6.Text += " " + unidad;
+                    //dtgprincipal.Rows[i].DefaultCellStyle.BackColor = Color.FromRgb(218, 255, 202);
+                }
+                if (!textBlock7.Text.Equals("-"))
+                {
+                    textBlock7.Text += " " + unidad;
+                    //dtgprincipal.Rows[i].DefaultCellStyle.BackColor = Color.FromRgb(255, 192, 192);
+                }
+                //dtgprincipal.Rows[i].Cells[8].Value += " " + unidad;*/
+            }
+        }
+
+        private void CargarDataGrid()
+        {
+            // cargar datos 
+            DataTable dt = new DataTable();
+            dt.Load(productoDAO.CargarTodo());
+            dtgprincipal.ItemsSource = dt.DefaultView;
+            productoDAO.cerrarConexion();
+
+
+            // añadir unidad a los valores y colores
+            /*
+            string nombre;
+            string unidad = "";
+            MySqlDataReader dr;
+            DataGridRow fila = (DataGridRow)dtgprincipal.ItemContainerGenerator.ContainerFromIndex(1);
+            if (fila == null)
+            {
+                dtgprincipal.UpdateLayout();
+                dtgprincipal.ScrollIntoView(dtgprincipal.Items[1]);
+                fila = (DataGridRow)dtgprincipal.ItemContainerGenerator.ContainerFromIndex(1); 
+            }
+            DataGridCell celda1 = dtgprincipal.Columns[1].GetCellContent(fila).Parent as DataGridCell;
+            TextBlock textBlock = celda1.Content as TextBlock;
+            MessageBox.Show(textBlock.Text);
+
+            */
+
+               
+        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -153,6 +238,17 @@ namespace VentanaRegistros
         {
             VentanaAddProducto ventanaAddProducto = new VentanaAddProducto();
             ventanaAddProducto.Show();
+        }
+
+        private void btnExportarInforme_Click(object sender, RoutedEventArgs e)
+        {
+            recorrerjlist();
+        }
+
+        private void GridDtgdRegistro_Loaded(object sender, RoutedEventArgs e)
+        {
+            CargarDataGrid();
+            
         }
     }
 }

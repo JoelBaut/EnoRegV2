@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VentanaRegistros"
         mc:Ignorable="d"
-        Title="VentanaRegistro" Height="720" Width="1280" WindowState="Maximized">
+        Title="VentanaRegistro" Height="720" Width="1280" WindowState="Maximized" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*" x:Name="gridColumn"/>
@@ -48,7 +48,7 @@
                     </Viewbox>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnExportarInforme"  Margin="27,10" Grid.Row="1" Height="50" >
+            <Button x:Name="btnExportarInforme"  Margin="27,10" Grid.Row="1" Height="50" Click="btnExportarInforme_Click" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridExportarInformeRegistro">
@@ -127,12 +127,12 @@
             </Button>
         </Grid>
         <GridSplitter Grid.Column="0" Grid.Row="1" BorderThickness="5" BorderBrush="Black" ResizeDirection="Columns" ResizeBehavior="CurrentAndNext" PreviewMouseMove="GridSplitter_PreviewMouseMove" Width="2"/>
-        <Grid x:Name="GridDtgdRegistro" Grid.Column="1" Grid.Row="1">
+        <Grid x:Name="GridDtgdRegistro" Grid.Column="1" Grid.Row="1" Loaded="GridDtgdRegistro_Loaded">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <DataGrid  d:ItemsSource="{d:SampleData ItemCount=5}" Margin="30,10,0,0" Grid.Row="1"/>
+            <DataGrid x:Name="dtgprincipal" ColumnWidth="*" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="30,10,0,0" Grid.Row="1" SelectionMode="Single" IsReadOnly="True"/>
             <Image Source="Imagenes/logoDptoIndAli.jpg" VerticalAlignment="Bottom" Grid.Column="1"/>
         </Grid>
         <Grid x:Name="GridDtgdProducto" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"  Visibility="Hidden">
