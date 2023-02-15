@@ -1,8 +1,16 @@
 ﻿using EnoregV2;
+using EnoregV2.Dominio;
 using EnoReV2;
+using MySql.Data.MySqlClient;
+using MySql.Data.Types;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +22,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
+using Image = System.Windows.Controls.Image;
+
 namespace VentanaRegistros
 {
     /// <summary>
@@ -21,10 +32,12 @@ namespace VentanaRegistros
     /// </summary>
     public partial class VentanaRegistro : Window
     {
+        ProductoDAO p = null;
         public VentanaRegistro()
         {
             InitializeComponent();
             btnRegistro.IsEnabled = false;
+            p = new ProductoDAO();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -151,8 +164,73 @@ namespace VentanaRegistros
 
         private void btnannadirProducto_Click(object sender, RoutedEventArgs e)
         {
-            VentanaAddProducto ventanaAddProducto = new VentanaAddProducto();
+            VentanaAddProducto ventanaAddProducto = new VentanaAddProducto(this);
             ventanaAddProducto.Show();
         }
+
+        private void dtgProductos_Loaded(object sender, RoutedEventArgs e)
+        {
+            CargaDataGrid();
+        }
+        public void CargaDataGrid() 
+        {
+            DataTable dt = new DataTable();
+            dt.Load(p.CargarListaProductos());
+            dtgProductos.ItemsSource = dt.DefaultView;
+            p.cerrarConexion();
+        }        
+        private void dtgProductos_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            string text="";
+            string ids = "";
+            int row = dtgProductos.SelectedIndex;            
+            DataGridRow columna = (DataGridRow)dtgProductos.ItemContainerGenerator.ContainerFromIndex(row);                
+            text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
+            ids= ((TextBlock)dtgProductos.Columns[0].GetCellContent(columna)).Text;
+            int id = int.Parse(ids);
+            Producto pro = new Producto(id,text);            
+            if (pro == null)
+            {
+                MessageBox.Show("La fila seleccionada no es un producto válido.");
+                return;
+            }
+            MySqlDataReader data = p.CargarImagen(pro);            
+            if (data.Read())
+            {
+                try
+                {
+                    byte[] imageBytes = (byte[])data["imagen"];
+                    BitmapImage bitmapImage = new BitmapImage();
+                    using (MemoryStream stream = new MemoryStream(imageBytes))
+                    {
+                        stream.Position = 0;
+                        bitmapImage.BeginInit();
+                        bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.UriSource = null;
+                        bitmapImage.StreamSource = stream;
+                        bitmapImage.EndInit();
+                    }
+                    Image image = new Image();
+                    imgProductos.Source = bitmapImage;
+                }
+                catch (System.InvalidCastException es) 
+                {
+                    imgProductos.Source = null;
+                }
+             
+            }           
+            try
+            {
+                DataTable dt = new DataTable();
+                dt.Load(p.CargarLotes(pro));
+                dtgLotes.ItemsSource = dt.DefaultView;
+                p.cerrarConexion();
+            }
+            catch (MySqlConversionException es)
+            {
+                
+            }
+    }
     }
 }
