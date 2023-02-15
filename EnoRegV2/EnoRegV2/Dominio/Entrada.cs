@@ -9,9 +9,9 @@ namespace EnoregV2.Dominio
     internal class Entrada : Registro
     {
         private string proveedor;
-        private DateTime caducidad;
+        private string caducidad;
         private string albaran;
-        public Entrada(DateTime f, Lote l, Double c, string o, Double cantLote, double cantProducto,string prov,DateTime cad,string alba) : base(f, l, c, o, cantLote, cantProducto)
+        public Entrada(string f, Lote l, Double c, string o, Double cantLote, double cantProducto,string prov,string cad,string alba) : base(f, l, c, o, cantLote, cantProducto)
         { 
             proveedor = prov; 
             caducidad = cad;
@@ -19,7 +19,7 @@ namespace EnoregV2.Dominio
         }
 
         public string Proveedor { get => proveedor; set => proveedor = value; }
-        public DateTime Caducidad { get => caducidad; set => caducidad = value; }
+        public string Caducidad { get => caducidad; set => caducidad = value; }
         public string Albaran { get => albaran; set => albaran = value; }
     }
 }

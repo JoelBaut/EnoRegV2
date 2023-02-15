@@ -43,7 +43,7 @@
         <TextBox Grid.Row="8" Grid.Column="2" x:Name="txbObservacionesEntrada" Margin="0,10" AcceptsReturn="True"/>
         <StackPanel Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0, 20">
             <Button x:Name="btnAceptarEntrada" Content="Aceptar" Margin="10,0" Width="75" Height="35" Click="btnAceptarEntrada_Click"/>
-            <Button x:Name="btnCancelarentrada" Content="Cancelar" Width="75" Height="35"/>
+            <Button x:Name="btnCancelarentrada" Content="Cancelar" Width="75" Height="35" Click="btnCancelarentrada_Click"/>
         </StackPanel>
     </Grid>
 </Window>
