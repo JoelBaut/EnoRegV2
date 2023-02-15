@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
+using Image = System.Windows.Controls.Image;
 
 namespace VentanaRegistros
 {
@@ -180,20 +182,14 @@ namespace VentanaRegistros
             //CONTINUA; NO CARGA IMAGEN
             string text="";
             int row = dtgProductos.SelectedIndex;
-            if (row == 0)
-            {
-                MessageBox.Show("NULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-            }
-            else
-            {
-               DataGridRow columna = (DataGridRow)dtgProductos.ItemContainerGenerator.ContainerFromIndex(row);                
-               text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
+            
+            DataGridRow columna = (DataGridRow)dtgProductos.ItemContainerGenerator.ContainerFromIndex(row);                
+            text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
                
-
-            }
 
             //MessageBox.Show(nombre + " " + unidad, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             Producto pro = new Producto(text,null,0);
+            
             if (pro == null)
             {
                 MessageBox.Show("La fila seleccionada no es un producto válido.");
@@ -203,24 +199,33 @@ namespace VentanaRegistros
             // Ahora 'selectedProducto' es un objeto de tipo 'Producto' que representa la fila seleccionada en el 'DataGrid'.
             // Puedes usarlo según tus necesidades.
 
-            MySqlDataReader dataReader = p.CargarImagen(pro);
-            if (dataReader.Read())
+            MySqlDataReader data = p.CargarImagen(pro);
+            
+            if (data.Read())
             {
-                // recuperamos la imagen...
-                pro.Imagen = (byte[])dataReader["imagen"];
-                MemoryStream ms = new System.IO.MemoryStream(pro.Imagen);
-                BitmapImage image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad; // here
-                image.StreamSource = ms;
-                imgProductos.Source = image;
-                image.EndInit();
+                try
+                {
+                    byte[] imageBytes = (byte[])data["imagen"];
+                    BitmapImage bitmapImage = new BitmapImage();
+                    using (MemoryStream stream = new MemoryStream(imageBytes))
+                    {
+                        stream.Position = 0;
+                        bitmapImage.BeginInit();
+                        bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.UriSource = null;
+                        bitmapImage.StreamSource = stream;
+                        bitmapImage.EndInit();
+                    }
+                    Image image = new Image();
+                    imgProductos.Source = bitmapImage;
+                }
+                catch (System.InvalidCastException es) 
+                {
+                    imgProductos.Source = null;
+                }
+             
             }
-            else
-            {
-                imgProductos.Source = null;
-            }
-
         }
     }
 }

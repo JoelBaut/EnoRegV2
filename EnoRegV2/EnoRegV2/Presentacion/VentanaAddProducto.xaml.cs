@@ -31,7 +31,7 @@ namespace EnoregV2
         ProductoDAO p = null;
         MySqlDataReader dr;
         VentanaRegistro v = null;
-        BitmapImage imagen = null;
+        byte[] imagenBytes = null;
         public VentanaAddProducto(VentanaRegistro a)
         {
             InitializeComponent();
@@ -49,20 +49,26 @@ namespace EnoregV2
 
         private void btnimagen_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Archivos de imagen (*.bmp, *.jpg, *.jpeg, *.png)|*.bmp;*.jpg;*.jpeg;*.png";
 
-            openFileDialog.Filter = "Archivos de imagen (*.png, *.jpg)|*.png;*.jpg";
-
-            bool? result = openFileDialog.ShowDialog();
-
-            if (result == true)
+            if (openFileDialog.ShowDialog() == true)
             {
-                imagen = new BitmapImage();
-                imagen.BeginInit();
-                imagen.UriSource = new Uri(openFileDialog.FileName);
-                ImgImagen.Source = imagen;
-                imagen.EndInit();                
+                BitmapImage imagenBitmap = new BitmapImage(new Uri(openFileDialog.FileName));
+                ImgImagen.Source = imagenBitmap;
+                imagenBytes = null;
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    BitmapEncoder encoder = new JpegBitmapEncoder(); // O cualquier otro tipo de codificador de imagen
+                    encoder.Frames.Add(BitmapFrame.Create(imagenBitmap));
+                    encoder.Save(stream);
+                    imagenBytes = stream.ToArray();
+                }
+
+                // Aquí puedes hacer lo que necesites con el arreglo de bytes de la imagen
             }
+
         }
 
         private void btnAccept_Click(object sender, RoutedEventArgs e)
@@ -94,23 +100,13 @@ namespace EnoregV2
             else 
             {
                 Producto pe = null;
-                if (imagen == null)
+                if (imagenBytes == null)
                 {
                     pe = new Producto(txbNombreProducto.Text, cbUnidades.SelectedValue.ToString(), 0);
                 }
                 else 
                 {
-                    Stream stream = imagen.StreamSource;
-                    Byte[] buffer = null;
-                    if (stream != null && stream.Length > 0)
-                    {
-                        using (BinaryReader br = new BinaryReader(stream))
-                        {
-                            buffer = br.ReadBytes((Int32)stream.Length);
-                        }
-                    }
-                    pe = new Producto(txbNombreProducto.Text, cbUnidades.SelectedValue.ToString(), 0, buffer);
-                   
+                    pe = new Producto(txbNombreProducto.Text, cbUnidades.SelectedValue.ToString(), 0, imagenBytes); 
                 }
                 if (pe != null)
                 {
