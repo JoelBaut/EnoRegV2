@@ -2,6 +2,8 @@
 using EnoReV2;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Media;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +23,8 @@ namespace VentanaRegistros
     /// </summary>
     public partial class VentanaRegistro : Window
     {
+        private Font Font;
+
         public VentanaRegistro()
         {
             InitializeComponent();
@@ -153,6 +157,23 @@ namespace VentanaRegistros
         {
             VentanaAddProducto ventanaAddProducto = new VentanaAddProducto();
             ventanaAddProducto.Show();
+        }
+
+        //Properties
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //tipo de fuente
+            System.Drawing.Font tipoLetra = EnoregV2.Properties.Settings.Default.Font;
+            System.Windows.Media.FontFamily tipoFuente = new System.Windows.Media.FontFamily(tipoLetra.Name);
+
+            //fondo
+            System.Drawing.Color fondo = EnoregV2.Properties.Settings.Default.ColorFondo;
+            System.Windows.Media.Brush brushF = new SolidColorBrush
+                (System.Windows.Media.Color.FromArgb
+                (fondo.A, fondo.R, fondo.G, fondo.B));
+
+            this.FontFamily = tipoFuente;
+            this.Background = brushF;
         }
     }
 }

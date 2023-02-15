@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace EnoReV2
 {
@@ -48,7 +50,7 @@ namespace EnoReV2
                 }
                 mensaje += " Producto";
                 cmbProductoEntrada.Focus();
-                cmbProductoEntrada.Background = Brushes.LightCoral;
+                cmbProductoEntrada.Background = System.Windows.Media.Brushes.LightCoral;
                 valor = true;
             }
             else
@@ -145,5 +147,23 @@ namespace EnoReV2
             }
             MessageBox.Show(mensaje + ".", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        //Properties
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //tipo de fuente
+            System.Drawing.Font tipoLetra = EnoregV2.Properties.Settings.Default.Font;
+            System.Windows.Media.FontFamily tipoFuente = new System.Windows.Media.FontFamily(tipoLetra.Name);
+
+            //fondo
+            System.Drawing.Color fondo = EnoregV2.Properties.Settings.Default.ColorFondo;
+            System.Windows.Media.Brush brushF = new SolidColorBrush
+                (System.Windows.Media.Color.FromArgb
+                (fondo.A, fondo.R, fondo.G, fondo.B));
+
+            this.FontFamily = tipoFuente;
+            this.Background = brushF;
+        }
+        
     }
 }

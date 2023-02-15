@@ -5,5 +5,14 @@
     <Setting Name="ConexionDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">SERVER=localhost;DATABASE=bodega_registro;UID=root;PASSWORD=;</Value>
     </Setting>
+    <Setting Name="Font" Type="System.Drawing.Font" Scope="User">
+      <Value Profile="(Default)">Bahnschrift Light, 12pt</Value>
+    </Setting>
+    <Setting Name="ColorLetra" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">WindowFrame</Value>
+    </Setting>
+    <Setting Name="ColorFondo" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">HighlightText</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

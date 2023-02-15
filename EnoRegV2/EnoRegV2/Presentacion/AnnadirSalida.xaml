@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EnoReV2"
         mc:Ignorable="d"
-        Title="Salidas" Height="550" Width="395">
+        Title="Salidas" Height="550" Width="395" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="ContextMenu">
             <Setter Property="Background" Value="Purple"/>

@@ -41,15 +41,16 @@
     <Reference Include="Microsoft.OData.Edm, Version=7.14.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.OData.Edm.7.14.0\lib\net45\Microsoft.OData.Edm.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=8.0.32.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=8.0.31.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\MySQL\MySQL Connector NET 8.0.32\Assemblies\v4.5.2\MySql.Data.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\MySQL\MySQL Connector NET 8.0.31\Assemblies\v4.5.2\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -90,14 +91,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Dominio\ConexionDB.cs" />
-    <Compile Include="Persistencia\Entrada.cs" />
-    <Compile Include="Persistencia\Lote.cs" />
-    <Compile Include="Persistencia\LoteDao.cs" />
-    <Compile Include="Persistencia\Producto.cs" />
-    <Compile Include="Persistencia\ProductoDAO.cs" />
-    <Compile Include="Persistencia\Registro.cs" />
-    <Compile Include="Persistencia\Salida.cs" />
+    <Compile Include="Persistencia\ConexionDB.cs" />
+    <Compile Include="Dominio\Entrada.cs" />
+    <Compile Include="Dominio\Lote.cs" />
+    <Compile Include="Dominio\LoteDao.cs" />
+    <Compile Include="Dominio\Producto.cs" />
+    <Compile Include="Dominio\ProductoDAO.cs" />
+    <Compile Include="Dominio\Registro.cs" />
+    <Compile Include="Dominio\Salida.cs" />
     <Compile Include="Presentacion\AnnadirEntrada.xaml.cs">
       <DependentUpon>AnnadirEntrada.xaml</DependentUpon>
     </Compile>
@@ -176,6 +177,8 @@
     <Resource Include="Presentacion\Imagenes\plus.png" />
     <Resource Include="Presentacion\Imagenes\productos.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Presentacion\Imagenes\logoDptoIndAli.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
