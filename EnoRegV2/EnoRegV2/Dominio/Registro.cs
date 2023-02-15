@@ -17,7 +17,7 @@ namespace EnoregV2.Dominio {
         public Registro() { }
         public Registro(DateTime f,Lote l,Double c,string o,Double cantLote,double cantProducto) { 
             fecha= f;
-            Lote = l;
+            lote = l;
             cantidad = c;
             observaciones = o;
             cantidadLote= cantLote;
