@@ -30,7 +30,7 @@ namespace EnoregV2.Dominio
         /// <summary>
         /// metodo para buscar los lotes de un producto.
         /// </summary>
-        /// <param name="p">The p.</param>
+        /// <param name="p">The productoDAO.</param>
         /// <returns>DataTable. con los datos de los lotes</returns>
         public DataTable BuscarLotePProducto(Producto p)
         {

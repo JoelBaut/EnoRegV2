@@ -12,11 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+using System.Windows.Media;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,12 +21,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
+using Color = System.Windows.Media.Color;
 
 namespace VentanaRegistros
 {
@@ -41,15 +37,12 @@ namespace VentanaRegistros
     public partial class VentanaRegistro : Window
     {
 
-        ProductoDAO p = null;
-
-        public ProductoDAO productoDAO;
-
+        ProductoDAO productoDAO = null;
         public VentanaRegistro()
         {
             InitializeComponent();
             btnRegistro.IsEnabled = false;
-            p = new ProductoDAO();
+            productoDAO = new ProductoDAO();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -62,6 +55,7 @@ namespace VentanaRegistros
 
         private void recorrerjlist()
         {
+            MySqlDataReader dr;
             for (int i = 0; i < dtgprincipal.Items.Count; i++)
             {
                 DataGridRow fila = (DataGridRow)dtgprincipal.ItemContainerGenerator.ContainerFromIndex(i);
@@ -77,26 +71,34 @@ namespace VentanaRegistros
                     DataGridCell celda7 = dtgprincipal.Columns[7].GetCellContent(fila).Parent as DataGridCell;
                     TextBlock textBlock7 = celda7.Content as TextBlock;
 
-                    string nombre = textBlock.Text;
-                    MessageBox.Show(nombre);
+                    DataGridCell celda8 = dtgprincipal.Columns[8].GetCellContent(fila).Parent as DataGridCell;
+                    TextBlock textBlock8 = celda8.Content as TextBlock;
 
+                    DataGridCell celda9 = dtgprincipal.Columns[9].GetCellContent(fila).Parent as DataGridCell;
+                    TextBlock textBlock9 = celda9.Content as TextBlock;
+
+                    string nombre = textBlock.Text;
+                    string unidad = "";
+                    dr = productoDAO.ObtenerUnidad(nombre);
+                     
+                    while (dr.Read())
+                    {
+                        unidad = dr.GetString(0);
+                                            }
+                    if (!textBlock6.Text.Equals("-"))
+                    {
+                        textBlock6.Text += " " + unidad;
+                        fila.Background = new SolidColorBrush(Color.FromRgb(218, 255, 202));
+
+                    }
+                    if (!textBlock7.Text.Equals("-"))
+                    {
+                        textBlock7.Text += " " + unidad;
+                        fila.Background = new SolidColorBrush(Color.FromRgb(255, 192, 192));
+                    }
+                    textBlock8.Text += " " + unidad;
+                    textBlock9.Text += " " + unidad;
                 }
-                /*
-                while (dr.Read())
-                {
-                    unidad = dr.GetString(0);
-                }
-                if (!textBlock6.Text.Equals("-"))
-                {
-                    textBlock6.Text += " " + unidad;
-                    //dtgprincipal.Rows[i].DefaultCellStyle.BackColor = Color.FromRgb(218, 255, 202);
-                }
-                if (!textBlock7.Text.Equals("-"))
-                {
-                    textBlock7.Text += " " + unidad;
-                    //dtgprincipal.Rows[i].DefaultCellStyle.BackColor = Color.FromRgb(255, 192, 192);
-                }
-                //dtgprincipal.Rows[i].Cells[8].Value += " " + unidad;*/
             }
         }
 
@@ -107,29 +109,8 @@ namespace VentanaRegistros
             dt.Load(productoDAO.CargarTodo());
             dtgprincipal.ItemsSource = dt.DefaultView;
             productoDAO.cerrarConexion();
-
-
-            // añadir unidad a los valores y colores
-            /*
-            string nombre;
-            string unidad = "";
-            MySqlDataReader dr;
-            DataGridRow fila = (DataGridRow)dtgprincipal.ItemContainerGenerator.ContainerFromIndex(1);
-            if (fila == null)
-            {
-                dtgprincipal.UpdateLayout();
-                dtgprincipal.ScrollIntoView(dtgprincipal.Items[1]);
-                fila = (DataGridRow)dtgprincipal.ItemContainerGenerator.ContainerFromIndex(1); 
-            }
-            DataGridCell celda1 = dtgprincipal.Columns[1].GetCellContent(fila).Parent as DataGridCell;
-            TextBlock textBlock = celda1.Content as TextBlock;
-            MessageBox.Show(textBlock.Text);
-
-            */
-
                
         }
-
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -267,9 +248,9 @@ namespace VentanaRegistros
         public void CargaDataGrid() 
         {
             DataTable dt = new DataTable();
-            dt.Load(p.CargarListaProductos());
+            dt.Load(productoDAO.CargarListaProductos());
             dtgProductos.ItemsSource = dt.DefaultView;
-            p.cerrarConexion();
+            productoDAO.cerrarConexion();
         }        
         private void dtgProductos_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
@@ -286,7 +267,7 @@ namespace VentanaRegistros
                 MessageBox.Show("La fila seleccionada no es un producto válido.");
                 return;
             }
-            MySqlDataReader data = p.CargarImagen(pro);            
+            MySqlDataReader data = productoDAO.CargarImagen(pro);            
             if (data.Read())
             {
                 try
@@ -315,9 +296,9 @@ namespace VentanaRegistros
             try
             {
                 DataTable dt = new DataTable();
-                dt.Load(p.CargarLotes(pro));
+                dt.Load(productoDAO.CargarLotes(pro));
                 dtgLotes.ItemsSource = dt.DefaultView;
-                p.cerrarConexion();
+                productoDAO.cerrarConexion();
             }
             catch (MySqlConversionException es)
             {
@@ -328,12 +309,6 @@ namespace VentanaRegistros
         private void btnExportarInforme_Click(object sender, RoutedEventArgs e)
         {
             recorrerjlist();
-        }
-
-        private void GridDtgdRegistro_Loaded(object sender, RoutedEventArgs e)
-        {
-            CargarDataGrid();
-            
         }
     }
 }
