@@ -1,8 +1,11 @@
-﻿using System;
+﻿using EnoregV2.Dominio;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +15,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using VentanaRegistros;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EnoReV2
 {
@@ -20,11 +25,89 @@ namespace EnoReV2
     /// </summary>
     public partial class AnnadirSalida : Window
     {
-        public AnnadirSalida()
+        Double cantidadRestante = 0;
+        ProductoDAO productoDao = new ProductoDAO();
+        LoteDao loteDao = new LoteDao();
+        Lote l = null;
+        VentanaRegistro v = null;
+        public AnnadirSalida(VentanaRegistro vr)
         {
             InitializeComponent();
+            CargarComboProductos();
+            v = vr;
         }
+        private void CargarComboProductos()
+        {
 
+            MySqlDataReader dr = productoDao.Cargarproductos();
+
+            while (dr.Read())
+            {
+                cmbProductoSalida.Items.Add(new
+                {
+                    id = dr["id_producto"].ToString(),
+                    nombre = dr["nombre"].ToString()
+                });
+            }
+            cmbProductoSalida.DisplayMemberPath = "nombre";
+            cmbProductoSalida.SelectedValuePath = "id";
+        }
+        private void CargarComboLotes() {
+            cmbLoteSalida.Items.Clear();
+            String idProductoSelecionado = cmbProductoSalida.SelectedValue.ToString();
+
+            MySqlDataReader dr = loteDao.CargarLotes(idProductoSelecionado);
+
+            while (dr.Read())
+            {
+                cmbLoteSalida.Items.Add(new
+                {
+                    id = dr["id_lote"].ToString(),
+                    nombre = dr["lote"].ToString()
+                });
+            }
+            cmbLoteSalida.DisplayMemberPath = "nombre";
+            cmbLoteSalida.SelectedValuePath = "id";
+        }
+        private void cmbProductoSalida_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CargarComboLotes();
+            lblCantidadRestante.Content = "Cantidad Disponible: " + 0;
+        }
+        private void cmbLoteSalida_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try {
+                string codigoLote = "";
+                codigoLote =  (sender as ComboBox).SelectedItem.ToString();
+
+                string patron = @"nombre\s*=\s*(\w+)";
+                Match match = Regex.Match(codigoLote, patron);
+                if (match.Success)
+                {
+                    string cod = match.Groups[1].Value.Trim();
+                    String value = cmbProductoSalida.SelectedValue.ToString();
+
+                    l = new Lote(cod, Int32.Parse(value));
+                    cantidadRestante = loteDao.ObtenerStockLote(l);
+                    if (cantidadRestante == -1)
+                    {
+                        cantidadRestante = 0;
+                    }
+                    MySqlDataReader dr = null;
+                    String unidad=null;
+                    dr = productoDao.ObtenerUnidad(cmbProductoSalida.Text);
+                    while (dr.Read())
+                    {
+                        unidad= dr.GetString(0);
+                    }
+                    lblCantidadRestante.Content = "Cantidad Disponible: " + cantidadRestante.ToString()+""+unidad;
+                }
+               
+            }  catch(Exception ex)
+            {
+
+            }       
+        }
         private void btnAceptarSalida_Click(object sender, RoutedEventArgs e)
         {
             string mensaje = "Tienes que rellenar o seleccionar:";
@@ -73,14 +156,16 @@ namespace EnoReV2
             }
             if (string.IsNullOrEmpty(txbCantidadSalida.Text))
             {
-                if (mensaje.Length > 34)
-                {
-                    mensaje += ",";
-                }
-                mensaje += " Cantidad";
-                txbCantidadSalida.Focus();
-                txbCantidadSalida.Background = Brushes.LightCoral;
-                valor = true;
+                if (chbLiquidar.IsChecked == false) {
+                    if (mensaje.Length > 34)
+                    {
+                        mensaje += ",";
+                    }
+                    mensaje += " Cantidad";
+                    txbCantidadSalida.Focus();
+                    txbCantidadSalida.Background = Brushes.LightCoral;
+                    valor = true;
+                }      
             }
             else
             {
@@ -96,25 +181,55 @@ namespace EnoReV2
                     txbCantidadSalida.Background = Brushes.White;
                 }
             }
-            /*
-            if (valor == false && (productoDAO.ObtenerStock(cmbProductoSalida.Text) - Convert.ToDecimal(cantidad, CultureInfo.InvariantCulture)) <= 0)
-            {
-                MessageBox.Show("Se pretende sacar mas productos de los disponibles.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
-                valor = true;
+
+            if (valor == false) {
+                if (chbLiquidar.IsChecked == true)
+                {
+                    txbCantidadSalida.Text = "0";
+                }
+                if (Double.Parse(txbCantidadSalida.Text) > cantidadRestante && chbLiquidar.IsChecked == false) {
+                    MessageBox.Show("Error, estas tratando de sacar mas stock del que hay disponible en el lote.\n(marca el boton de liquidar si quieres retirar todo el stock restante del lote)", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
+                    valor = true;
+                }    
             }
+            
             if (valor == false)
             {
                 mensaje = "Salida introducida correctamente";
-                //productoDAO.InsertarSalida(cmbProductos.Text, dtpFechaSalida.Value.ToString("yyyy-MM-dd"), txbLote.Text, cantidad, txbDestino.Text, txbObservaciones.Text);
-                //productoDAO.cerrarConexion();
-                //DialogResult = DialogResult.OK;
-                //this.Close();
+
+                // recuperar cantidad lote
+                Double stockLote = loteDao.ObtenerStockLote(l);
+
+                // obtener stock del producto
+                Double stockProducto = productoDao.ObtenerStockProducto(cmbProductoSalida.Text);
+
+                Salida s = new Salida(dtpFechaSalida.Text,l,Double.Parse(txbCantidadSalida.Text), txbObservacionesSalida.Text,stockLote,stockProducto, txbDestino.Text);
+
+                Boolean liquidar = (bool)chbLiquidar.IsChecked;
+                loteDao.InsertarSalida(s,liquidar);
+
+                v.CargarDataGrid();
+                v.dtgprincipal.UpdateLayout();
+                v.recorrerjlist();
+
+                MessageBox.Show(mensaje + ".", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
             }
-            */
             if (mensaje.Length > 34)
             {
                 MessageBox.Show(mensaje + ".", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
             }            
+        }
+
+        private void btnCancelarSalida_Click(object sender, RoutedEventArgs e)
+        {
+           this.Close();
+        }
+
+        private void chbLiquidar_Checked(object sender, RoutedEventArgs e)
+        {
+            txbCantidadSalida.IsEnabled= false;
+            lblCantidadRestante.Content = "";
         }
     }
 }

@@ -52,11 +52,17 @@ namespace EnoregV2.Persistencia
             MySqlCommand cmd = new MySqlCommand(sentenciaSQL, conn);
             cmd.ExecuteNonQuery();
         }
-        internal void InsertarProducto(string sentenciaSQL)
+        public void InsertarProducto(string sentenciaSQL)
         {
             crearConexion();
             MySqlCommand cmd = new MySqlCommand(sentenciaSQL, conn);
             cmd.ExecuteNonQuery();
+        }
+        public MySqlDataReader BuscarLotesPorProducto(string sentenciaSQL) {
+            crearConexion();
+            MySqlCommand cmd = new MySqlCommand(sentenciaSQL, conn);
+            MySqlDataReader dataReader = cmd.ExecuteReader();
+            return dataReader;
         }
     }
 }
