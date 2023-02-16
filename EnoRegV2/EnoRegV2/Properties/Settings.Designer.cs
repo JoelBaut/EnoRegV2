@@ -25,7 +25,8 @@ namespace EnoregV2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SERVER=localhost;DATABASE=bodega_registro;UID=root;PASSWORD=;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("SERVER=localhost;DATABASE=bodega_registro;UID=root;PASSWORD=;POOLING=FALSE;conver" +
+            "t zero datetime=True")]
         public string ConexionDB {
             get {
                 return ((string)(this["ConexionDB"]));

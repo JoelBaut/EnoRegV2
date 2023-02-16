@@ -33,14 +33,14 @@
         <Label Grid.Row="1" Grid.Column="1" x:Name="lblFechaSalida" Content="Fecha:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10"/>
         <DatePicker Grid.Row="1" Grid.Column="2" x:Name="dtpFechaSalida" Margin="0,10"/>
         <Label Grid.Row="2" Grid.Column="1" x:Name="lblProductoSalida" Content="Producto:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10"/>
-        <ComboBox Grid.Row="2" Grid.Column="2" x:Name="cmbProductoSalida" Height="25" Margin="0,10"/>
+        <ComboBox Grid.Row="2" Grid.Column="2" x:Name="cmbProductoSalida" Height="25" Margin="0,10" SelectionChanged="cmbProductoSalida_SelectionChanged"/>
         <Label Grid.Row="3" Grid.Column="1" x:Name="lblLoteSalida" Content="Lote:" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10"/>
-        <ComboBox Grid.Row="3" Grid.Column="2" x:Name="cmbLoteSalida" Margin="0,10"/>
-        <Label Grid.Row="4" Grid.Column="2" x:Name="lblCantidadRestante" HorizontalAlignment="Center" Content="Cantidad restante: 15g" Margin="0,0,0,10"/>
+        <ComboBox Grid.Row="3" Grid.Column="2" x:Name="cmbLoteSalida" Margin="0,10" SelectionChanged="cmbLoteSalida_SelectionChanged"/>
+        <Label Grid.Row="4" Grid.Column="2" x:Name="lblCantidadRestante" HorizontalAlignment="Center" Content="" Margin="0,0,0,10"/>
         <Label Grid.Row="5" Grid.Column="1" x:Name="lblCantidadSalida" Content="Cantidad:" HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Horizontal">
             <TextBox x:Name="txbCantidadSalida" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="106"/>
-            <CheckBox x:Name="chbLiquidar" Content="Liquidar" HorizontalAlignment="Left" Margin="10, 0" VerticalAlignment="Top" Height="26"/>
+            <CheckBox x:Name="chbLiquidar" Content="Liquidar" HorizontalAlignment="Left" Margin="10, 0" VerticalAlignment="Top" Height="26" Checked="chbLiquidar_Checked"/>
         </StackPanel>
         <Label Grid.Row="6" Grid.Column="1" x:Name="lblDestino" Content="Destino:" HorizontalAlignment="Right"  VerticalAlignment="Center" Margin="0,10"/>
         <TextBox Grid.Row="6" Grid.Column="2" x:Name="txbDestino" TextWrapping="Wrap" Text="" Margin="0,10"/>
@@ -48,7 +48,7 @@
         <TextBox Grid.Row="7" Grid.Column="2" x:Name="txbObservacionesSalida" TextWrapping="Wrap" Margin="0, 5, 0, 20" Text="" AcceptsReturn="True"/>
         <StackPanel Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,20">
             <Button x:Name="btnAceptarSalida" Content="Aceptar" HorizontalAlignment="Left" Margin="10,0" Width="75" Height="35" Click="btnAceptarSalida_Click"/>
-            <Button x:Name="btnCancelarSalida" Content="Cancelar" HorizontalAlignment="Left" Width="75" Height="35"/>
+            <Button x:Name="btnCancelarSalida" Content="Cancelar" HorizontalAlignment="Left" Width="75" Height="35" Click="btnCancelarSalida_Click"/>
         </StackPanel>
     </Grid>
 </Window>

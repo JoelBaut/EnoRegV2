@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConexionDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">SERVER=localhost;DATABASE=bodega_registro;UID=root;PASSWORD=;</Value>
+      <Value Profile="(Default)">SERVER=localhost;DATABASE=bodega_registro;UID=root;PASSWORD=;POOLING=FALSE;convert zero datetime=True</Value>
     </Setting>
     <Setting Name="Font" Type="System.Drawing.Font" Scope="User">
       <Value Profile="(Default)">Bahnschrift Light, 12pt</Value>

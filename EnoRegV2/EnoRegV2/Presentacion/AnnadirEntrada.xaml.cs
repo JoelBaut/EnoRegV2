@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EnoregV2.Dominio;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -12,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using VentanaRegistros;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace EnoReV2
@@ -21,9 +24,32 @@ namespace EnoReV2
     /// </summary>
     public partial class AnnadirEntrada : Window
     {
-        public AnnadirEntrada()
+        LoteDao loteDao = new LoteDao();
+        ProductoDAO productoDao = new ProductoDAO();
+        string fecha;
+        string fechaCaducidad;
+        VentanaRegistro v = null;
+        public AnnadirEntrada(VentanaRegistro vr)
         {
             InitializeComponent();
+            CargarComboProductos();
+            v = vr;
+        }
+
+        private void CargarComboProductos() {
+
+            MySqlDataReader dr = productoDao.Cargarproductos();
+
+            while (dr.Read())
+            {
+                cmbProductoEntrada.Items.Add(new
+                {
+                    id = dr["id_producto"].ToString(),
+                    nombre = dr["nombre"].ToString()
+                });
+            }
+            cmbProductoEntrada.DisplayMemberPath = "nombre";
+            cmbProductoEntrada.SelectedValuePath = "id";
         }
 
         private void btnAceptarEntrada_Click(object sender, RoutedEventArgs e)
@@ -140,10 +166,44 @@ namespace EnoReV2
             if (valor == false)
             {
                 mensaje = "Entrada introducida correctamente";
-                //productoDAO.InsertarEntrada(cmbProductoEntrada.Text, dtpFechaEntrada.Value.ToString("yyyy-MM-dd"), txbLoteEntrada.Text, txbAlbaran.Text, txbProveedor.Text, dtpCaducidad.Value.ToString("yyyy-MM-dd"), cantidad);
-                //productoDAO.cerrarConexion();
-                //DialogResult = DialogResult.OK;
-                //this.Close();
+                // crear lote
+                Lote lote = new Lote(txbLoteEntrada.Text,Int32.Parse(cmbProductoEntrada.SelectedValue.ToString()));
+
+                // obetener fecha
+                DateTime? selectedDate = dtpFechaEntrada.SelectedDate;
+                DateTime? selectedDateCaducidad = dtpCaducidad.SelectedDate;
+                if (selectedDate.HasValue)
+                {
+                   fecha = selectedDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                }
+                if (selectedDateCaducidad.HasValue)
+                {
+                    fechaCaducidad = selectedDateCaducidad.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                }
+                // obtener stock del lote, si el lote  no existe se creara uno nuevo
+                Double stockLote = loteDao.ObtenerStockLote(lote);
+                if (stockLote == -1) {
+                    Lote loteAInsertar = new Lote(txbLoteEntrada.Text,
+                        Int32.Parse(cmbProductoEntrada.SelectedValue.ToString()),fechaCaducidad);
+
+                    loteDao.InsertarLote(loteAInsertar, Double.Parse(txbCantidadEntrada.Text));
+
+                    stockLote = 0;
+                }
+                // obtener stock del producto
+                Double stockProducto = productoDao.ObtenerStockProducto(cmbProductoEntrada.Text);
+
+                // crear entrada e insertarla
+                Entrada entrada = new Entrada(fecha,lote,
+                    Double.Parse(txbCantidadEntrada.Text
+                    ) 
+                    ,txbObservacionesEntrada.Text,stockLote,stockProducto,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
+               
+                loteDao.InsertarEntrada(entrada);
+                v.CargarDataGrid();
+                v.dtgprincipal.UpdateLayout();
+                v.recorrerjlist();
+                this.Close();
             }
             MessageBox.Show(mensaje + ".", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
         }
