@@ -38,9 +38,13 @@ namespace VentanaRegistros
     /// 
     public partial class VentanaRegistro : Window
     {
-
+        //declaracion de variables
         ProductoDAO productoDAO = null;
         bool isSorting;
+
+        /// <summary>
+        /// Constructor de VentanaRegistro <see cref="VentanaRegistro"/> class.
+        /// </summary>
         public VentanaRegistro()
         {
             InitializeComponent();
@@ -48,6 +52,11 @@ namespace VentanaRegistros
             productoDAO = new ProductoDAO();
         }
 
+        /// <summary>
+        /// Evento Loaded de la ventana de regsitros, donde cargamos y actualizamos el data grid principal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             productoDAO = new ProductoDAO();
@@ -56,6 +65,9 @@ namespace VentanaRegistros
             recorrerjlist();
         }
 
+        /// <summary>
+        /// Metodo Recorrerjlists.
+        /// </summary>
         public void recorrerjlist()
         {
             MySqlDataReader dr;
@@ -105,6 +117,10 @@ namespace VentanaRegistros
             }
         }
 
+        /// <summary>
+        /// Metodo CargarDataGrid, donde cargamos los productos
+        /// en el data grid
+        /// </summary>
         public void CargarDataGrid()
         {
             // cargar datos 
@@ -116,6 +132,13 @@ namespace VentanaRegistros
                
         }
 
+        /// <summary>
+        /// Evento onClick del boton de productos, que ocultara los botones y 
+        /// data grid de los registros y mostraras los de productos. Tambien 
+        /// deshabilita el boton de productos y habilita el de registros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             gridRegistroBotones.Visibility = Visibility.Hidden;
@@ -128,6 +151,13 @@ namespace VentanaRegistros
             btnProductos.IsEnabled = false;
         }
 
+        /// <summary>
+        /// Evento onClick del boton de registros, que ocultara los botones y 
+        /// data grid de los productos y mostraras los de registros. Tambien 
+        /// deshabilita el boton de registros y habilita el de productos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             gridRegistroBotones.Visibility = Visibility.Visible;
@@ -139,6 +169,13 @@ namespace VentanaRegistros
             btnRegistro.IsEnabled = false;
             btnProductos.IsEnabled= true;
         }
+
+        /// <summary>
+        /// Evento del GridSplitter, que nos permitira moverlo 
+        /// el GridSplitter dentro de los limites marcados 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="MouseEventArgs"/></param>
         private void GridSplitter_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             GridSplitter splitter = sender as GridSplitter;
@@ -220,18 +257,36 @@ namespace VentanaRegistros
             }
         }
 
+        /// <summary>
+        /// Evento onClick del boton de Filtros, el cual abrira
+        /// la ventana de filtros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnFiltros_Click(object sender, RoutedEventArgs e)
         {
             Filtros v = new Filtros();
             v.Show();
         }
 
+        /// <summary>
+        /// Evento onClick del boton de Entradas, el cual abrira
+        /// la ventana de entradas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnEntrada_Click(object sender, RoutedEventArgs e)
         {
             AnnadirEntrada en = new AnnadirEntrada(this);
             en.Show();
         }
 
+        /// <summary>
+        /// Evento onClick del boton de Salidas, el cual abrira
+        /// la ventana de salidas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnSalida_Click(object sender, RoutedEventArgs e)
         {
             AnnadirSalida sa = new AnnadirSalida(this);
@@ -239,13 +294,24 @@ namespace VentanaRegistros
 
         }
 
+        /// <summary>
+        /// Evento onClick del boton de Añadir Productos, el cual abrira
+        /// la ventana de añadir productos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnannadirProducto_Click(object sender, RoutedEventArgs e)
         {
             VentanaAddProducto ventanaAddProducto = new VentanaAddProducto(this);
             ventanaAddProducto.Show();
         }
 
-
+        /// <summary>
+        /// Evento Loaded del data grid de productos, donde 
+        /// cargaremos los datos de los productos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void dtgProductos_Loaded(object sender, RoutedEventArgs e)
         {
             CargaDataGrid();

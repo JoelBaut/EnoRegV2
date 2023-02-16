@@ -22,11 +22,17 @@ namespace EnoReV2
     /// </summary>
     public partial class AnnadirEntrada : Window
     {
+        //declaracion de variables
         LoteDao loteDao = new LoteDao();
         ProductoDAO productoDao = new ProductoDAO();
         string fecha;
         string fechaCaducidad;
         VentanaRegistro v = null;
+
+        /// <summary>
+        /// Constructor de la clase AnnadirEntrada <see cref="AnnadirEntrada"/> class.
+        /// </summary>
+        /// <param name="vr">The vr.</param>
         public AnnadirEntrada(VentanaRegistro vr)
         {
             InitializeComponent();
@@ -34,6 +40,10 @@ namespace EnoReV2
             v = vr;
         }
 
+        /// <summary>
+        /// Metodo CargaComboProductos, donde rellenamos el combo con el nombre
+        /// de los productos disponibles en la base de datos
+        ///</summary>
         private void CargarComboProductos() {
 
             MySqlDataReader dr = productoDao.Cargarproductos();
@@ -50,12 +60,23 @@ namespace EnoReV2
             cmbProductoEntrada.SelectedValuePath = "id";
         }
 
+        ///<summary>
+        /// Evento onClick del boton Aceptar Entrada, el cual,
+        /// primero revisa que todos los campos se hayan rellenado correctamente,
+        /// sino es asi, informara del error. Después, si todos los campos estan correctamente 
+        /// se insertaran los datos de la entrada en la base de datos
+        ///</summary>
+        ///<param name="sender"></param>
+        ///<param name="e"></param>
         private void btnAceptarEntrada_Click(object sender, RoutedEventArgs e)
         {
+            // declaracion de variables
             Boolean valor = false;
             string cantidad = "";
             double cantidaNumerico = 0;
             string mensaje = "Tienes que rellenar o seleccionar:";
+
+            //revisamos que introduce la fecha de entrada 
             if (dtpFechaEntrada.SelectedDate == DateTime.Now.Date)
             {
                 if (mensaje.Length > 34)
@@ -66,6 +87,8 @@ namespace EnoReV2
                 dtpFechaEntrada.Focus();
                 valor = true;
             }
+
+            //revisamos que seleccionen un producto del combo
             if (cmbProductoEntrada.SelectedIndex.Equals(-1))
             {
                 if (mensaje.Length > 34)
@@ -81,6 +104,8 @@ namespace EnoReV2
             {
                 cmbProductoEntrada.Background = Brushes.White;
             }
+
+            //revisamos que se rellena el campo lote
             if (string.IsNullOrEmpty(txbLoteEntrada.Text))
             {
                 if (mensaje.Length > 34)
@@ -96,6 +121,8 @@ namespace EnoReV2
             {
                 txbLoteEntrada.Background = Brushes.White;
             }
+
+            //revisamos que se rellena el campo cantidad con numeros
             if (string.IsNullOrEmpty(txbCantidadEntrada.Text))
             {
                 if (mensaje.Length > 34)
@@ -121,6 +148,8 @@ namespace EnoReV2
                     txbCantidadEntrada.Background = Brushes.White;
                 }
             }
+
+            //revisamos que introduzca la fecha de caducidad
             if (dtpCaducidad.SelectedDate == DateTime.Now.Date)
             {
                 if (mensaje.Length > 34)
@@ -131,6 +160,8 @@ namespace EnoReV2
                 dtpCaducidad.Focus();
                 valor = true;
             }
+
+            //revisamos que rellena el campo del proveedor
             if (string.IsNullOrEmpty(txbProveedor.Text))
             {
                 if (mensaje.Length > 34)
@@ -146,6 +177,8 @@ namespace EnoReV2
             {
                 txbProveedor.Background = Brushes.White;
             }
+
+            //revisamos que rellena el campo del albaran
             if (string.IsNullOrEmpty(txbAlbaran.Text))
             {
                 if (mensaje.Length > 34)
@@ -161,6 +194,8 @@ namespace EnoReV2
             {
                 txbAlbaran.Background = Brushes.White;
             }
+
+            //si todos los campos estan correctamente
             if (valor == false)
             {
                 mensaje = "Entrada introducida correctamente";
@@ -206,6 +241,11 @@ namespace EnoReV2
             MessageBox.Show(mensaje + ".", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        /// <summary>
+        /// Evento onClick del boton Cancelar, el cual cerrara la ventana de Entradas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCancelarentrada_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

@@ -25,17 +25,28 @@ namespace EnoReV2
     /// </summary>
     public partial class AnnadirSalida : Window
     {
+        //declaracion de variables
         Double cantidadRestante = 0;
         ProductoDAO productoDao = new ProductoDAO();
         LoteDao loteDao = new LoteDao();
         Lote l = null;
         VentanaRegistro v = null;
+
+        /// <summary>
+        /// Constructor de la clase AnnadirSalida <see cref="AnnadirSalida"/> class.
+        /// </summary>
+        /// <param name="vr">The vr.</param>
         public AnnadirSalida(VentanaRegistro vr)
         {
             InitializeComponent();
             CargarComboProductos();
             v = vr;
         }
+
+        /// <summary>
+        /// Metodo CargaComboProductos, donde rellenamos el combo con el nombre
+        /// de los productos disponibles en la base de datos
+        ///</summary>
         private void CargarComboProductos()
         {
 
@@ -52,6 +63,11 @@ namespace EnoReV2
             cmbProductoSalida.DisplayMemberPath = "nombre";
             cmbProductoSalida.SelectedValuePath = "id";
         }
+
+        /// <summary>
+        /// Metodo CargaComboLotes, donde rellenamos el combo con el nombre
+        /// de los lotes disponibles en la base de datos
+        ///</summary>
         private void CargarComboLotes() {
             cmbLoteSalida.Items.Clear();
             String idProductoSelecionado = cmbProductoSalida.SelectedValue.ToString();
@@ -69,11 +85,25 @@ namespace EnoReV2
             cmbLoteSalida.DisplayMemberPath = "nombre";
             cmbLoteSalida.SelectedValuePath = "id";
         }
+
+        /// <summary>
+        /// Evento de seleccion del combo de productos, donde dependiendo del producto elegido
+        /// se mostraran sus lotes disponibles en el combo de lotes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="SelectionChangedEventArgs"/></param>
         private void cmbProductoSalida_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CargarComboLotes();
             lblCantidadRestante.Content = "Cantidad Disponible: " + 0;
         }
+
+        /// <summary>
+        /// Evento de seleccion del combo de lotes, donde dependiendo de lote 
+        /// seleccionado, nos mostrara la cantidad disponible del lote en un label
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="SelectionChangedEventArgs"/></param>
         private void cmbLoteSalida_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try {
@@ -105,15 +135,26 @@ namespace EnoReV2
                
             }  catch(Exception ex)
             {
-
+                
             }       
         }
+
+        /// <summary>
+        /// Evento onClick del boton Aceptar Salida, donde primero revisamos
+        /// que los campos se hayan rellenado correctamente, y una vez hecha la
+        /// revision, se insertaran los datos de la salida en la base de datos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnAceptarSalida_Click(object sender, RoutedEventArgs e)
         {
+            //declaracion de variables
             string mensaje = "Tienes que rellenar o seleccionar:";
             Boolean valor = false;
             double cantidaNumerico = 0;
             string cantidad = "";
+
+            //revisamos que seleccione la fecha de salida
             if (dtpFechaSalida.SelectedDate == DateTime.Now.Date)
             {
                 if (mensaje.Length > 34)
@@ -124,6 +165,8 @@ namespace EnoReV2
                 dtpFechaSalida.Focus();
                 valor = true;
             }
+
+            //revisamos que seleccione un elemento del combo de productos
             if (cmbProductoSalida.SelectedIndex.Equals(-1))
             {
                 if (mensaje.Length > 34)
@@ -139,13 +182,15 @@ namespace EnoReV2
             {
                 cmbProductoSalida.Background = Brushes.White;
             }
+
+            //revisamos que seleccione un elemento del combo de lotes
             if (cmbLoteSalida.SelectedIndex.Equals(-1))
             {
                 if (mensaje.Length > 34)
                 {
                     mensaje += ",";
                 }
-                mensaje += " Producto";
+                mensaje += " Lote";
                 cmbLoteSalida.Focus();
                 cmbLoteSalida.Background = Brushes.LightCoral;
                 valor = true;
@@ -154,6 +199,8 @@ namespace EnoReV2
             {
                 cmbLoteSalida.Background = Brushes.White;
             }
+
+            //revisamos que rellena la cantidad con solo numeros
             if (string.IsNullOrEmpty(txbCantidadSalida.Text))
             {
                 if (chbLiquidar.IsChecked == false) {
@@ -183,16 +230,20 @@ namespace EnoReV2
             }
 
             if (valor == false) {
+                //si se marca el checkbox de liquidar, cambiamos el campo cantidad a 0
                 if (chbLiquidar.IsChecked == true)
                 {
                     txbCantidadSalida.Text = "0";
                 }
+
+                //si se introduce un numero mayor a la cantidad disponible, se informara al usuario
                 if (Double.Parse(txbCantidadSalida.Text) > cantidadRestante && chbLiquidar.IsChecked == false) {
                     MessageBox.Show("Error, estas tratando de sacar mas stock del que hay disponible en el lote.\n(marca el boton de liquidar si quieres retirar todo el stock restante del lote)", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
                     valor = true;
                 }    
             }
             
+            //si todos los campos son correctos, introducimos los datos en la base de datos
             if (valor == false)
             {
                 mensaje = "Salida introducida correctamente";
@@ -221,11 +272,23 @@ namespace EnoReV2
             }            
         }
 
+        /// <summary>
+        /// Evento onClick del boton Cancelar, el cual cerrara la ventana de Salidas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCancelarSalida_Click(object sender, RoutedEventArgs e)
         {
            this.Close();
         }
 
+        /// <summary>
+        /// Evento de marcar el checkbox de Liquidar, donde 
+        /// deshabilitamos el texbox de cantidad para que no pueda
+        /// introducir datos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void chbLiquidar_Checked(object sender, RoutedEventArgs e)
         {
             txbCantidadSalida.IsEnabled= false;
