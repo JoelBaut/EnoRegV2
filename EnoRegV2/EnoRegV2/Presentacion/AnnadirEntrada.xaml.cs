@@ -186,13 +186,13 @@ namespace EnoReV2
                     stockLote = 0;
                 }
                 // obtener stock del producto
-                Double stockproducto = productoDao.ObtenerStockProducto(cmbProductoEntrada.Text);
+                Double stockProducto = productoDao.ObtenerStockProducto(cmbProductoEntrada.Text);
 
                 // crear entrada e insertarla
                 Entrada entrada = new Entrada(fecha,lote,
                     Double.Parse(txbCantidadEntrada.Text
                     ) 
-                    ,txbObservacionesEntrada.Text,stockLote,stockproducto,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
+                    ,txbObservacionesEntrada.Text,stockLote,stockProducto,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
                
                 loteDao.InsertarEntrada(entrada);
 

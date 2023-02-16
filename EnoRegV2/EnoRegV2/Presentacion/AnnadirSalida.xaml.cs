@@ -85,8 +85,7 @@ namespace EnoReV2
                     String value = cmbProductoSalida.SelectedValue.ToString();
 
                     l = new Lote(cod, Int32.Parse(value));
-                   
-                    Double cantidadRestante = loteDao.ObtenerStockLote(l);
+                    cantidadRestante = loteDao.ObtenerStockLote(l);
                     if (cantidadRestante == -1)
                     {
                         cantidadRestante = 0;
@@ -178,17 +177,30 @@ namespace EnoReV2
                 }
             }
 
-            if (valor == false &&  Double.Parse(txbCantidadSalida.Text) > cantidadRestante && chbLiquidar.IsChecked == false) {
-                MessageBox.Show("Error, estas tratando de sacar mas stock del que hay disponible en el lote.\n(marca el boton de liquidar si quieres retirar todo el stock restante del lote)", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
-                valor = true;
+            if (valor == false) {
+                if (Double.Parse(txbCantidadSalida.Text) > cantidadRestante && chbLiquidar.IsChecked == false) {
+                    MessageBox.Show("Error, estas tratando de sacar mas stock del que hay disponible en el lote.\n(marca el boton de liquidar si quieres retirar todo el stock restante del lote)", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
+                    valor = true;
+                }    
             }
             
             if (valor == false)
             {
                 mensaje = "Salida introducida correctamente";
 
-              //  Salida s = new Salida(dtpFechaSalida.Text,l,txbCantidadSalida,);
+                // recuperar cantidad lote
+                Double stockLote = loteDao.ObtenerStockLote(l);
 
+                // obtener stock del producto
+                Double stockProducto = productoDao.ObtenerStockProducto(cmbProductoSalida.Text);
+
+                Salida s = new Salida(dtpFechaSalida.Text,l,Double.Parse(txbCantidadSalida.Text), txbObservacionesSalida.Text,stockLote,stockProducto, txbDestino.Text);
+
+                Boolean liquidar = (bool)chbLiquidar.IsChecked;
+
+                loteDao.InsertarSalida(s,liquidar);
+
+                
                 //productoDAO.InsertarSalida(cmbProductos.Text, dtpFechaSalida.Value.ToString("yyyy-MM-dd"), txbLote.Text, cantidad, txbDestino.Text, txbObservaciones.Text);
                 //productoDAO.cerrarConexion();
                 //DialogResult = DialogResult.OK;
