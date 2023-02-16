@@ -61,12 +61,25 @@ namespace EnoregV2.Dominio
                 idLote = dataReader.GetString(0);
             }
 
-            String sql = ("insert into producto_salida values(null," + idLote + ",'" + s.Fecha + "'," +
-                "" + s.Cantidad+ "," + s.CantidadLote + "," + s.CantidadProducto 
+            String sql = null;
+            if (liquidar)
+            {
+                s.Cantidad = s.CantidadLote;
+            }
+                sql = ("insert into producto_salida values(null," + idLote + ",'" + s.Fecha + "'," +
+                "" + s.Cantidad + "," + s.CantidadLote + "," + s.CantidadProducto
                 + ",'" + s.Destino + "','" + s.Observaciones + "')");
 
+            
+
             conexionDB.Insertar(sql);
-            MessageBox.Show("why");
+
+            // actualizar stock de  producto y lote
+
+            String actualizarLote = "update lote set stock = " + (s.CantidadLote - s.Cantidad) + " where id_lote = " + idLote;
+            String actualizarProducto = "update producto set stock = " + (s.CantidadProducto - s.Cantidad) + " where id_producto = " + s.Lote.IdProducto;
+            conexionDB.Update(actualizarLote);
+            conexionDB.Update(actualizarProducto);
         }
         /// <summary>
         /// Metodo para insertar una entrada

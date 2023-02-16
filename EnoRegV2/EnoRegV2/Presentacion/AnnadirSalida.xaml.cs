@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using VentanaRegistros;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace EnoReV2
@@ -28,10 +29,12 @@ namespace EnoReV2
         ProductoDAO productoDao = new ProductoDAO();
         LoteDao loteDao = new LoteDao();
         Lote l = null;
-        public AnnadirSalida()
+        VentanaRegistro v = null;
+        public AnnadirSalida(VentanaRegistro vr)
         {
             InitializeComponent();
             CargarComboProductos();
+            v = vr;
         }
         private void CargarComboProductos()
         {
@@ -153,14 +156,16 @@ namespace EnoReV2
             }
             if (string.IsNullOrEmpty(txbCantidadSalida.Text))
             {
-                if (mensaje.Length > 34)
-                {
-                    mensaje += ",";
-                }
-                mensaje += " Cantidad";
-                txbCantidadSalida.Focus();
-                txbCantidadSalida.Background = Brushes.LightCoral;
-                valor = true;
+                if (chbLiquidar.IsChecked == false) {
+                    if (mensaje.Length > 34)
+                    {
+                        mensaje += ",";
+                    }
+                    mensaje += " Cantidad";
+                    txbCantidadSalida.Focus();
+                    txbCantidadSalida.Background = Brushes.LightCoral;
+                    valor = true;
+                }      
             }
             else
             {
@@ -178,6 +183,10 @@ namespace EnoReV2
             }
 
             if (valor == false) {
+                if (chbLiquidar.IsChecked == true)
+                {
+                    txbCantidadSalida.Text = "0";
+                }
                 if (Double.Parse(txbCantidadSalida.Text) > cantidadRestante && chbLiquidar.IsChecked == false) {
                     MessageBox.Show("Error, estas tratando de sacar mas stock del que hay disponible en el lote.\n(marca el boton de liquidar si quieres retirar todo el stock restante del lote)", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
                     valor = true;
@@ -197,14 +206,14 @@ namespace EnoReV2
                 Salida s = new Salida(dtpFechaSalida.Text,l,Double.Parse(txbCantidadSalida.Text), txbObservacionesSalida.Text,stockLote,stockProducto, txbDestino.Text);
 
                 Boolean liquidar = (bool)chbLiquidar.IsChecked;
-
                 loteDao.InsertarSalida(s,liquidar);
 
-                
-                //productoDAO.InsertarSalida(cmbProductos.Text, dtpFechaSalida.Value.ToString("yyyy-MM-dd"), txbLote.Text, cantidad, txbDestino.Text, txbObservaciones.Text);
-                //productoDAO.cerrarConexion();
-                //DialogResult = DialogResult.OK;
-                //this.Close();
+                v.CargarDataGrid();
+                v.dtgprincipal.UpdateLayout();
+                v.recorrerjlist();
+
+                MessageBox.Show(mensaje + ".", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
             }
             if (mensaje.Length > 34)
             {
@@ -215,6 +224,12 @@ namespace EnoReV2
         private void btnCancelarSalida_Click(object sender, RoutedEventArgs e)
         {
            this.Close();
+        }
+
+        private void chbLiquidar_Checked(object sender, RoutedEventArgs e)
+        {
+            txbCantidadSalida.IsEnabled= false;
+            lblCantidadRestante.Content = "";
         }
     }
 }
