@@ -100,17 +100,18 @@ namespace EnoregV2
             else 
             {
                 Producto pe = null;
-                if (imagenBytes == null)
+                try
+                {
+                    
+                    pe = new Producto(txbNombreProducto.Text, cbUnidades.SelectedValue.ToString(), 0, imagenBytes);                   
+                    if (pe != null)
+                    {
+                        p.InsertarProducto(pe);
+                    }
+                }
+                catch (NullReferenceException es)
                 {
                     pe = new Producto(txbNombreProducto.Text, cbUnidades.SelectedValue.ToString(), 0);
-                }
-                else 
-                {
-                    pe = new Producto(txbNombreProducto.Text, cbUnidades.SelectedValue.ToString(), 0, imagenBytes); 
-                }
-                if (pe != null)
-                {
-                    p.InsertarProducto(pe);
                 }
                 v.CargaDataGrid();
                 Close();                
