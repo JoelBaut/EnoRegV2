@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using VentanaRegistros;
 
 namespace EnoReV2
 {
@@ -25,10 +26,12 @@ namespace EnoReV2
         ProductoDAO productoDao = new ProductoDAO();
         string fecha;
         string fechaCaducidad;
-        public AnnadirEntrada()
+        VentanaRegistro v = null;
+        public AnnadirEntrada(VentanaRegistro vr)
         {
             InitializeComponent();
             CargarComboProductos();
+            v = vr;
         }
 
         private void CargarComboProductos() {
@@ -186,16 +189,18 @@ namespace EnoReV2
                     stockLote = 0;
                 }
                 // obtener stock del producto
-                Double stockproducto = productoDao.ObtenerStockProducto(cmbProductoEntrada.Text);
+                Double stockProducto = productoDao.ObtenerStockProducto(cmbProductoEntrada.Text);
 
                 // crear entrada e insertarla
                 Entrada entrada = new Entrada(fecha,lote,
                     Double.Parse(txbCantidadEntrada.Text
                     ) 
-                    ,txbObservacionesEntrada.Text,stockLote,stockproducto,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
+                    ,txbObservacionesEntrada.Text,stockLote,stockProducto,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
                
                 loteDao.InsertarEntrada(entrada);
-
+                v.CargarDataGrid();
+                v.dtgprincipal.UpdateLayout();
+                v.recorrerjlist();
                 this.Close();
             }
             MessageBox.Show(mensaje + ".", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);

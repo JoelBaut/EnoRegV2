@@ -27,6 +27,8 @@ using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 using Color = System.Windows.Media.Color;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace VentanaRegistros
 {
@@ -38,6 +40,7 @@ namespace VentanaRegistros
     {
 
         ProductoDAO productoDAO = null;
+        bool isSorting;
         public VentanaRegistro()
         {
             InitializeComponent();
@@ -53,7 +56,7 @@ namespace VentanaRegistros
             recorrerjlist();
         }
 
-        private void recorrerjlist()
+        public void recorrerjlist()
         {
             MySqlDataReader dr;
             for (int i = 0; i < dtgprincipal.Items.Count; i++)
@@ -102,11 +105,12 @@ namespace VentanaRegistros
             }
         }
 
-        private void CargarDataGrid()
+        public void CargarDataGrid()
         {
             // cargar datos 
             DataTable dt = new DataTable();
             dt.Load(productoDAO.CargarTodo());
+           // dtgprincipal.ItemsSource = null;
             dtgprincipal.ItemsSource = dt.DefaultView;
             productoDAO.cerrarConexion();
                
@@ -224,14 +228,15 @@ namespace VentanaRegistros
 
         private void btnEntrada_Click(object sender, RoutedEventArgs e)
         {
-            AnnadirEntrada en = new AnnadirEntrada();
+            AnnadirEntrada en = new AnnadirEntrada(this);
             en.Show();
         }
 
         private void btnSalida_Click(object sender, RoutedEventArgs e)
         {
-            AnnadirSalida sa = new AnnadirSalida();
-            sa.Show();
+            AnnadirSalida sa = new AnnadirSalida(this);
+             sa.Show();
+
         }
 
         private void btnannadirProducto_Click(object sender, RoutedEventArgs e)
@@ -310,5 +315,31 @@ namespace VentanaRegistros
         {
             recorrerjlist();
         }
-    }
+
+        private void dtgprincipal_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            var dataGrid = sender as DataGrid;
+
+            if (dataGrid != null)
+            {
+               /* dataGrid.Items.SortDescriptions.Clear();
+                if (!string.IsNullOrEmpty(e.Column.SortMemberPath) && e.Column.SortDirection != null)
+                {
+                    dataGrid.Items.SortDescriptions.Add(new SortDescription(e.Column.SortMemberPath, e.Column.SortDirection.Value));
+                }
+                dataGrid.Items.Refresh();*/
+
+                isSorting = true;
+            }
+        }
+            private void dtgprincipal_LayoutUpdated(object sender, EventArgs e)
+            {
+                if (isSorting)
+                {
+                    isSorting = false;
+
+                recorrerjlist();
+                }
+            }
+        }
 }
