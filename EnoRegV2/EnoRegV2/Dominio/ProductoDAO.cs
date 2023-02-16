@@ -1,6 +1,8 @@
 ﻿using EnoregV2.Persistencia;
 
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
+using Mysqlx.Cursor;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace EnoregV2.Dominio
 {
@@ -18,12 +21,14 @@ namespace EnoregV2.Dominio
     /// </summary>
     public class ProductoDAO
     {
-        ConexionDB conexionDB = null;
+          ConexionDB conexionDB = new ConexionDB();
 
         public ProductoDAO()
         {
-            conexionDB = new ConexionDB();
+           
         }
+
+
         public void cerrarConexion()
         {
             conexionDB.cerrarConexion();
@@ -34,16 +39,14 @@ namespace EnoregV2.Dominio
         /// <returns>devuelve un MySqlDataReader con todos los datos</returns>
         public MySqlDataReader CargarTodo()
         {
-            string sql = "select fecha_entrada Fecha, nombre Nombre, proveedor Proveedor, lote Lote, fecha_caducidad Caducidad, albaran Albaran,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Entrada," +
-                "'-' Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, '-' Destino, '-' Observaciones" +
-                "from producto_entrada, producto, lote " +
-                "where producto_entrada.id_producto_entrada = producto.id_producto and producto_entrada.id_lote =lote.id_lote" +
-                "Union" +
-                "select fecha_salida Fecha, nombre Nombre, '-' Proveedor, lote Lote, '-'Caducidad, '-'Albaran,'-'Entrada,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Salida," +
-                " REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, destino Destino, observaciones Observaciones" +
-                "from producto_salida, producto,lote" +
-                "where producto_salida.id_producto_salida = producto.id_producto and producto_salida.id_lote=lote.id_lote " +
-                "order by fecha DESC;";
+            string sql = "select fecha_entrada Fecha, nombre Nombre, proveedor Proveedor, lote Lote, fecha_caducidad Caducidad, albaran Albaran,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Entrada,'-' Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, '-' Destino, '-' Observaciones" +
+                " from producto_entrada, producto, lote" +
+                " where producto_entrada.id_producto_entrada = producto.id_producto and producto_entrada.id_lote = lote.id_lote" +
+                " Union" +
+                " select fecha_salida Fecha, nombre Nombre, '-' Proveedor, lote Lote, '-'Caducidad, '-'Albaran,'-'Entrada,REPLACE(REPLACE(REPLACE(FORMAT(cantidad, 3), ',', '|'), '.', ','), '|', '.') Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote, 3), ',', '|'), '.', ','), '|', '.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto, 3), ',', '|'), '.', ','), '|', '.') CantidadTotal, destino Destino, observaciones Observaciones" +
+                " from producto_salida, producto,lote " +
+                "where producto_salida.id_producto_salida = producto.id_producto and producto_salida.id_lote = lote.id_lote" +
+                " order by fecha DESC;";
 
             return conexionDB.Select(sql);
         }
@@ -77,26 +80,26 @@ namespace EnoregV2.Dominio
         /// Metodo comprobado, Se modifica la insercion a insertar mediante un objeto de tipo producto. Si el producto tiene una imagen
         /// se inserta con ella si no no.
         /// </summary>
-        /// <param name="p">Parametro con un objeto de tipo Producto</param>
+        /// <param name="p">Parametro con un objeto de tipo Producto</param>       
         public void InsertarProducto(Producto p)
         {
-            string sql = "INSERT INTO `producto`(`nombre`, `unidad`, `imagen`) VALUES ('" + p.Nombre + "', '" + p.Unidad + "',@pic);";
-            if (p.Imagen == null)
-            {
-                conexionDB.InsertarProducto(sql);
-            }
-            else
-            {
-                conexionDB.InsertarProducto(sql, p.Imagen);
-            }
+            string sql = "INSERT INTO `producto`(`nombre`, `unidad`, `imagen`) VALUES ('" + p.Nombre + "', '" + p.Unidad + "',@pic);";           
+                conexionDB.InsertarProducto(sql, p.Imagen);            
+        }
+        internal void InsertarProducto(string nombre, string unidad)
+        {
+
+            string sql = "INSERT INTO `producto`(`nombre`, `unidad`) VALUES ('" + nombre + "', '" + unidad + "');";
+
+            conexionDB.InsertarProducto(sql);
         }
         /// <summary>
         /// Metodo para Cargar productos a la hora de tener una lista de productos
         /// </summary>
         /// <returns>devuelve un MySqlDataReader con todos los datos</returns>
-        public MySqlDataReader Cargarproductos()
+        public MySqlDataReader CargarListaProductos()
         {
-            string sql = "Select id_producto,nombre from producto";
+            string sql = "Select id_producto 'Id Producto',nombre 'Nombre',unidad 'Unidad',stock 'Stock de Producto' from producto";
             return conexionDB.Select(sql);
 
         }
@@ -105,12 +108,47 @@ namespace EnoregV2.Dominio
         /// </summary>
         /// <param name="p"></param>
         /// <returns>devuelve un MySqlDataReader con todos los datos</returns>
-        public MySqlDataReader CargarNombres(Producto p)
+        public MySqlDataReader CargarNombres()
+        {
+            string sql = "Select id,nombre,unidad,stock from producto";
+            return conexionDB.Select(sql);
+
+        }
+        public MySqlDataReader CargarUnidad()
+        {
+            string sql = "Select unidad from producto";
+            return conexionDB.Select(sql);
+
+        }
+        public MySqlDataReader CargarProductos(Producto p)
         {
             string sql = "Select nombre from producto where nombre='" + p.Nombre + "'";
             return conexionDB.Select(sql);
 
         }
+        public MySqlDataReader CargarLotes(Producto p)
+        {
+            string sql = "Select id_lote ID,id_producto 'ID Producto',lote 'Numero Lote',stock 'Stock Lote' from lote where id_producto='" + p.Id + "'";
+            return conexionDB.Select(sql);
+
+        }
+        public Boolean CompruebaProductos(String nombre)
+        {
+            Boolean existe = false;
+            string sql = "Select nombre from producto where nombre='" + nombre + "'";
+            MySqlDataReader datos = conexionDB.Select(sql);
+            if (datos.Read())
+            {
+                existe = true;
+            }
+            else
+            {
+                existe = false;
+            }
+            return existe;
+
+        }
+
         /// <summary>
         /// Metodo para cargar la imagen de un producto
         /// </summary>
@@ -121,6 +159,7 @@ namespace EnoregV2.Dominio
             string sql = "Select imagen from producto where nombre = '" + p.Nombre + "'";
             return conexionDB.Select(sql);
         }
+
         /// <summary>
         /// PENDIENTE DE HACER FILTROS
         /// </summary>
@@ -196,6 +235,32 @@ namespace EnoregV2.Dominio
                    " order by fecha DESC;";
             }
             return conexionDB.Select(sql);
+        }       
+        /// <summary>
+        /// Metodo para Cargar productos a la hora de tener una lista de productos
+        /// </summary>
+        /// <returns>devuelve un MySqlDataReader con todos los datos</returns>
+        public MySqlDataReader Cargarproductos()
+        {
+            string sql = "Select id_producto,nombre from producto";
+            return conexionDB.Select(sql);
+
+        }        
+        /// <summary>
+        /// metodo para obtener el stock de los productos
+        /// </summary>
+        /// <param name="nombreProducto">The nombre producto.</param>
+        /// <returns></returns>
+        public Double ObtenerStockProducto(String nombreProducto) {
+            String sql = "select p.stock from producto p where p.nombre = '" + nombreProducto + "'";
+
+            String stock = null;
+            MySqlDataReader dataReader = conexionDB.Select(sql);
+            while (dataReader.Read())
+            {
+                stock = dataReader.GetString(0);
+            }
+            return Double.Parse(stock);
         }
     }
 }

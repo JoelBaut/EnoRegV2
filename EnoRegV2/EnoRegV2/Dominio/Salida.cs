@@ -10,7 +10,7 @@ namespace EnoregV2.Dominio
     {
         private string destino;
 
-        public Salida(DateTime f, Lote l, Double c, string o, Double cantLote, double cantProducto,string des) : base(f, l, c, o, cantLote, cantProducto)
+        public Salida(string f, Lote l, Double c, string o, Double cantLote, double cantProducto,string des) : base(f, l, c, o, cantLote, cantProducto)
         {
             destino = des;
         }
