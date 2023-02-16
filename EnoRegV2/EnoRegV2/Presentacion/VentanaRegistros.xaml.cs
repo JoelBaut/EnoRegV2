@@ -29,6 +29,7 @@ using Image = System.Windows.Controls.Image;
 using Color = System.Windows.Media.Color;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using EnoregV2.Presentacion;
 
 namespace VentanaRegistros
 {
@@ -328,7 +329,7 @@ namespace VentanaRegistros
 
         private void btnExportarInforme_Click(object sender, RoutedEventArgs e)
         {
-            recorrerjlist();
+            
         }
 
         private void dtgprincipal_Sorting(object sender, DataGridSortingEventArgs e)
@@ -356,5 +357,11 @@ namespace VentanaRegistros
                 recorrerjlist();
                 }
             }
+
+        private void btnInformeProducto_Click(object sender, RoutedEventArgs e)
+        {
+            InformeProductos informe = new InformeProductos();
+            informe.Show();
         }
+    }
 }

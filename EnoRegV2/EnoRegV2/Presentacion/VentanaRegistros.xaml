@@ -97,7 +97,7 @@
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Button x:Name="btnInformeProducto"  VerticalAlignment="Top" Margin="27,0" >
+            <Button x:Name="btnInformeProducto"  VerticalAlignment="Top" Margin="27,0" Click="btnInformeProducto_Click" >
                 <Button.Content>
                     <Viewbox Height="50" Width="250">
                         <Grid x:Name="gridExportarInformeProducto">

@@ -101,8 +101,7 @@ namespace EnoregV2
             {
                 Producto pe = null;
                 try
-                {
-                    
+                {                    
                     pe = new Producto(txbNombreProducto.Text, cbUnidades.SelectedValue.ToString(), 0, imagenBytes);                   
                     if (pe != null)
                     {
