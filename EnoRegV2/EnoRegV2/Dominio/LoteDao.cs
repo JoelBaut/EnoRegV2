@@ -49,9 +49,37 @@ namespace EnoregV2.Dominio
         /// metodo para insertar una salida
         /// </summary>
         /// <param name="s">The s.</param>
-        public void InsertarSalida(Salida s) 
-        { 
+        public void InsertarSalida(Salida s,Boolean liquidar) 
+        {
+            // obtener id del lote
+            String BuscarIdLote = "select id_lote from lote l where l.lote = '" + s.Lote.CodigoLote + "' group by id_lote";
+            MySqlDataReader dataReader = conexionDB.Select(BuscarIdLote);
 
+            string idLote = null;
+            while (dataReader.Read())
+            {
+                idLote = dataReader.GetString(0);
+            }
+
+            String sql = null;
+            if (liquidar)
+            {
+                s.Cantidad = s.CantidadLote;
+            }
+                sql = ("insert into producto_salida values(null," + idLote + ",'" + s.Fecha + "'," +
+                "" + s.Cantidad + "," + s.CantidadLote + "," + s.CantidadProducto
+                + ",'" + s.Destino + "','" + s.Observaciones + "')");
+
+            
+
+            conexionDB.Insertar(sql);
+
+            // actualizar stock de  producto y lote
+
+            String actualizarLote = "update lote set stock = " + (s.CantidadLote - s.Cantidad) + " where id_lote = " + idLote;
+            String actualizarProducto = "update producto set stock = " + (s.CantidadProducto - s.Cantidad) + " where id_producto = " + s.Lote.IdProducto;
+            conexionDB.Update(actualizarLote);
+            conexionDB.Update(actualizarProducto);
         }
         /// <summary>
         /// Metodo para insertar una entrada
@@ -59,6 +87,7 @@ namespace EnoregV2.Dominio
         /// <param name="e">The e.</param>
         public void InsertarEntrada( Entrada e)
         {
+            // obtener id del lote
             String BuscarIdLote = "select id_lote from lote l where l.lote = '" + e.Lote.CodigoLote + "' group by id_lote"; 
             MySqlDataReader dataReader = conexionDB.Select(BuscarIdLote);
 
