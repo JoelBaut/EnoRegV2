@@ -316,15 +316,29 @@ namespace VentanaRegistros
         {
             CargaDataGrid();
         }
+
+        /// <summary>
+        /// Metodo CargaDataGrid, donde cargamos los productos disponibles
+        /// en la base de datos en un data table
+        /// </summary>
         public void CargaDataGrid() 
         {
             DataTable dt = new DataTable();
             dt.Load(productoDAO.CargarListaProductos());
             dtgProductos.ItemsSource = dt.DefaultView;
             productoDAO.cerrarConexion();
-        }        
+        }
+
+        /// <summary>
+        /// Evento de seleccion de elemento en el data grid de productos, que
+        /// cuando hacemos clic en unos de los productos, aparece su imagen asociada 
+        /// en la ventana
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="SelectionChangedEventArgs"/></param>
         private void dtgProductos_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
+            //declaracion de variables
             string text="";
             string ids = "";
             int row = dtgProductos.SelectedIndex;            
@@ -332,12 +346,16 @@ namespace VentanaRegistros
             text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
             ids= ((TextBlock)dtgProductos.Columns[0].GetCellContent(columna)).Text;
             int id = int.Parse(ids);
-            Producto pro = new Producto(id,text);            
+            Producto pro = new Producto(id,text);     
+            
+            //si la fila seleccionada esta vacia, lo indicamos
             if (pro == null)
             {
                 MessageBox.Show("La fila seleccionada no es un producto válido.");
                 return;
             }
+
+            //aqui cargamos la imagenes de los productos
             MySqlDataReader data = productoDAO.CargarImagen(pro);            
             if (data.Read())
             {
@@ -364,6 +382,7 @@ namespace VentanaRegistros
                 }
              
             }           
+            //se cargan los lotes y se muestran en el data table
             try
             {
                 DataTable dt = new DataTable();
@@ -376,7 +395,12 @@ namespace VentanaRegistros
                 
             }
     }
-
+        /// <summary>
+        /// Evento onClick del boton de exportar informe, el cual llama al 
+        /// metodo recorrerjlist
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnExportarInforme_Click(object sender, RoutedEventArgs e)
         {
             recorrerjlist();
