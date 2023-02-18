@@ -116,5 +116,10 @@ namespace EnoregV2
                 Close();                
             }
         }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
