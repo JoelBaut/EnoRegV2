@@ -27,6 +27,8 @@ using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 using Color = System.Windows.Media.Color;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace VentanaRegistros
 {
@@ -38,6 +40,7 @@ namespace VentanaRegistros
     {
 
         ProductoDAO productoDAO = null;
+        bool isSorting;
         public VentanaRegistro()
         {
             InitializeComponent();
@@ -51,9 +54,22 @@ namespace VentanaRegistros
             CargarDataGrid();
             dtgprincipal.UpdateLayout();
             recorrerjlist();
+
+            //tipo de fuente
+            System.Drawing.Font tipoLetra = EnoregV2.Properties.Settings.Default.Font;
+            System.Windows.Media.FontFamily tipoFuente = new System.Windows.Media.FontFamily(tipoLetra.Name);
+
+            //fondo
+            System.Drawing.Color fondo = EnoregV2.Properties.Settings.Default.ColorFondo;
+            System.Windows.Media.Brush brushF = new SolidColorBrush
+                (System.Windows.Media.Color.FromArgb
+                (fondo.A, fondo.R, fondo.G, fondo.B));
+
+            this.FontFamily = tipoFuente;
+            this.Background = brushF;
         }
 
-        private void recorrerjlist()
+        public void recorrerjlist()
         {
             MySqlDataReader dr;
             for (int i = 0; i < dtgprincipal.Items.Count; i++)
@@ -102,11 +118,12 @@ namespace VentanaRegistros
             }
         }
 
-        private void CargarDataGrid()
+        public void CargarDataGrid()
         {
             // cargar datos 
             DataTable dt = new DataTable();
             dt.Load(productoDAO.CargarTodo());
+           // dtgprincipal.ItemsSource = null;
             dtgprincipal.ItemsSource = dt.DefaultView;
             productoDAO.cerrarConexion();
                
@@ -122,6 +139,8 @@ namespace VentanaRegistros
 
             btnRegistro.IsEnabled= true;
             btnProductos.IsEnabled = false;
+
+            CargaDataGrid();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -218,20 +237,21 @@ namespace VentanaRegistros
 
         private void btnFiltros_Click(object sender, RoutedEventArgs e)
         {
-            Filtros v = new Filtros();
+            Filtros v = new Filtros(this);
             v.Show();
         }
 
         private void btnEntrada_Click(object sender, RoutedEventArgs e)
         {
-            AnnadirEntrada en = new AnnadirEntrada();
+            AnnadirEntrada en = new AnnadirEntrada(this);
             en.Show();
         }
 
         private void btnSalida_Click(object sender, RoutedEventArgs e)
         {
-            AnnadirSalida sa = new AnnadirSalida();
-            sa.Show();
+            AnnadirSalida sa = new AnnadirSalida(this);
+             sa.Show();
+
         }
 
         private void btnannadirProducto_Click(object sender, RoutedEventArgs e)
@@ -310,5 +330,31 @@ namespace VentanaRegistros
         {
             recorrerjlist();
         }
-    }
+
+        private void dtgprincipal_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            var dataGrid = sender as DataGrid;
+
+            if (dataGrid != null)
+            {
+               /* dataGrid.Items.SortDescriptions.Clear();
+                if (!string.IsNullOrEmpty(e.Column.SortMemberPath) && e.Column.SortDirection != null)
+                {
+                    dataGrid.Items.SortDescriptions.Add(new SortDescription(e.Column.SortMemberPath, e.Column.SortDirection.Value));
+                }
+                dataGrid.Items.Refresh();*/
+
+                isSorting = true;
+            }
+        }
+            private void dtgprincipal_LayoutUpdated(object sender, EventArgs e)
+            {
+                if (isSorting)
+                {
+                    isSorting = false;
+
+                recorrerjlist();
+                }
+            }
+        }
 }

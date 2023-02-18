@@ -132,7 +132,7 @@
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <DataGrid x:Name="dtgprincipal" ColumnWidth="*" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="30,10,0,0" Grid.Row="1" SelectionMode="Single" IsReadOnly="True"/>
+            <DataGrid x:Name="dtgprincipal" ColumnWidth="*" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="30,10,0,0" Grid.Row="1" SelectionMode="Single" IsReadOnly="True" Sorting="dtgprincipal_Sorting" LayoutUpdated="dtgprincipal_LayoutUpdated"/>
             <Image Source="Imagenes/logoDptoIndAli.jpg" VerticalAlignment="Bottom" Grid.Column="1"/>
         </Grid>
         <Grid x:Name="GridDtgdProducto" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"  Visibility="Hidden">
