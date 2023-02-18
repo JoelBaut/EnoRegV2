@@ -54,6 +54,19 @@ namespace VentanaRegistros
             CargarDataGrid();
             dtgprincipal.UpdateLayout();
             recorrerjlist();
+
+            //tipo de fuente
+            System.Drawing.Font tipoLetra = EnoregV2.Properties.Settings.Default.Font;
+            System.Windows.Media.FontFamily tipoFuente = new System.Windows.Media.FontFamily(tipoLetra.Name);
+
+            //fondo
+            System.Drawing.Color fondo = EnoregV2.Properties.Settings.Default.ColorFondo;
+            System.Windows.Media.Brush brushF = new SolidColorBrush
+                (System.Windows.Media.Color.FromArgb
+                (fondo.A, fondo.R, fondo.G, fondo.B));
+
+            this.FontFamily = tipoFuente;
+            this.Background = brushF;
         }
 
         public void recorrerjlist()
@@ -126,6 +139,8 @@ namespace VentanaRegistros
 
             btnRegistro.IsEnabled= true;
             btnProductos.IsEnabled = false;
+
+            CargaDataGrid();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
