@@ -1,0 +1,23 @@
+﻿<Window x:Class="EnoregV2.Presentacion.InformeProductos"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cr="clr-namespace:SAPBusinessObjects.WPF.Viewer;assembly=SAPBusinessObjects.WPF.Viewer"
+        mc:Ignorable="d"
+        Title="InformeProductos" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="14*"/>
+        </Grid.ColumnDefinitions>
+        <cr:CrystalReportsViewer Name="reportViewer" Grid.Row="2" Grid.ColumnSpan="3" />
+        <ComboBox x:Name="cmbProductos" VerticalAlignment="Center" Margin="10,0,10,0"/>
+        <Button x:Name="btnCargar" Content="Cargar" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Click="btnCargar_Click"/>
+    </Grid>
+</Window>
