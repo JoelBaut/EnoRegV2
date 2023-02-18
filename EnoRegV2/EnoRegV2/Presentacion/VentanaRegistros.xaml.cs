@@ -222,7 +222,7 @@ namespace VentanaRegistros
 
         private void btnFiltros_Click(object sender, RoutedEventArgs e)
         {
-            Filtros v = new Filtros();
+            Filtros v = new Filtros(this);
             v.Show();
         }
 
