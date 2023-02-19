@@ -48,7 +48,7 @@ namespace EnoregV2.Dominio
         /// <returns>devuelve un MySqlDataReader con todos los datos</returns>
         public MySqlDataReader CargarTodo()
         {
-            string sql = "select fecha_entrada Fecha, nombre Nombre, proveedor Proveedor, lote Lote, fecha_caducidad Caducidad, albaran Albaran,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Entrada,'-' Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, '-' Destino, '-' Observaciones" +
+            string sql = "select fecha_entrada Fecha, nombre Nombre, proveedor Proveedor, lote Lote, fecha_caducidad Caducidad, albaran Albaran,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Entrada,'-' Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, '-' Destino, observaciones Observaciones" +
                 " from producto_entrada, producto, lote" +
                 " where lote.id_producto = producto.id_producto and producto_entrada.id_lote = lote.id_lote" +
                 " Union" +
@@ -219,7 +219,7 @@ namespace EnoregV2.Dominio
 
             if (registro.Equals("Entradas/Salidas"))
             {
-                sql = "select fecha_entrada Fecha, nombre Nombre, proveedor Proveedor, lote Lote, fecha_caducidad Caducidad, albaran Albaran,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Entrada,'-' Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, '-' Destino, '-' Observaciones" +
+                sql = "select fecha_entrada Fecha, nombre Nombre, proveedor Proveedor, lote Lote, fecha_caducidad Caducidad, albaran Albaran,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Entrada,'-' Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, '-' Destino, observaciones Observaciones" +
                    " from producto_entrada, producto, lote" +
                    " where lote.id_producto = producto.id_producto and producto_entrada.id_lote = lote.id_lote " + consultaStringProducto + consultaStringFechaEntrada + consultaStringLote +
                    " Union" +
@@ -231,7 +231,7 @@ namespace EnoregV2.Dominio
             }
             else if (registro.Equals("Entradas"))
             {
-                sql = "select fecha_entrada Fecha, nombre Nombre, proveedor Proveedor, lote Lote, fecha_caducidad Caducidad, albaran Albaran,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Entrada,'-' Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, '-' Destino, '-' Observaciones\r\n" +
+                sql = "select fecha_entrada Fecha, nombre Nombre, proveedor Proveedor, lote Lote, fecha_caducidad Caducidad, albaran Albaran,REPLACE(REPLACE(REPLACE(FORMAT(cantidad,3),',','|'),'.',','),'|','.') Entrada,'-' Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote,3),',','|'),'.',','),'|','.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto,3),',','|'),'.',','),'|','.') CantidadTotal, '-' Destino, observaciones Observaciones" +
                    " from producto_entrada, producto, lote" +
                    " where lote.id_producto = producto.id_producto and producto_entrada.id_lote = lote.id_lote " + consultaStringProducto + consultaStringFechaEntrada + consultaStringLote +
                    " order by fecha DESC;";
