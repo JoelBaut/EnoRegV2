@@ -91,7 +91,7 @@ namespace EnoregV2.Presentacion
             {
                 CrystalReport2 cargarReport2 = new CrystalReport2();                
                 cargarReport2.SetParameterValue("PARAM_ID", cmbProductos.SelectedValue);
-                ; reportViewer.ViewerCore.ReportSource = cargarReport2;
+                reportViewer.ViewerCore.ReportSource = cargarReport2;
             }
         }
     }

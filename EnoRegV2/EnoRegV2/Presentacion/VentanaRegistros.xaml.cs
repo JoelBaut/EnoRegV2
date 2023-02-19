@@ -51,7 +51,6 @@ namespace VentanaRegistros
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            productoDAO = new ProductoDAO();
             CargarDataGrid();
             dtgprincipal.UpdateLayout();
             recorrerjlist();
@@ -238,7 +237,7 @@ namespace VentanaRegistros
 
         private void btnFiltros_Click(object sender, RoutedEventArgs e)
         {
-            Filtros v = new Filtros(this);
+            Filtros v = new Filtros(this, productoDAO);
             v.Show();
         }
 
@@ -329,7 +328,8 @@ namespace VentanaRegistros
 
         private void btnExportarInforme_Click(object sender, RoutedEventArgs e)
         {
-            
+            InformeRegistros registros= new InformeRegistros(productoDAO);
+            registros.Show();
         }
 
         private void dtgprincipal_Sorting(object sender, DataGridSortingEventArgs e)

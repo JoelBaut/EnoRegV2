@@ -21,14 +21,23 @@ namespace EnoregV2.Dominio
     /// </summary>
     public class ProductoDAO
     {
-          ConexionDB conexionDB = new ConexionDB();
+        ConexionDB conexionDB = new ConexionDB();
+        String registroFiltros = "Entradas/Salidas";
+        String param = "";
+        String paramFechaEntrada = "";
+        String paramFechaSalida = "";
+        String paramDestino = "";
+
+        public string RegistroFiltros { get => registroFiltros; set => registroFiltros = value; }
+        public string Param { get => param; set => param = value; }
+        public string ParamFechaEntrada { get => paramFechaEntrada; set => paramFechaEntrada = value; }
+        public string ParamFechaSalida { get => paramFechaSalida; set => paramFechaSalida = value; }
+        public string ParamDestino { get => paramDestino; set => paramDestino = value; }
 
         public ProductoDAO()
         {
            
         }
-
-
         public void cerrarConexion()
         {
             conexionDB.cerrarConexion();
@@ -216,7 +225,7 @@ namespace EnoregV2.Dominio
                    " Union" +
                    " select fecha_salida Fecha, nombre Nombre, '-' Proveedor, lote Lote, '-'Caducidad, '-'Albaran,'-'Entrada,REPLACE(REPLACE(REPLACE(FORMAT(cantidad, 3), ',', '|'), '.', ','), '|', '.') Salida, REPLACE(REPLACE(REPLACE(FORMAT(stock_lote, 3), ',', '|'), '.', ','), '|', '.') StockLote,REPLACE(REPLACE(REPLACE(FORMAT(stock_producto, 3), ',', '|'), '.', ','), '|', '.') CantidadTotal, destino Destino, observaciones Observaciones" +
                    " from producto_salida, producto, lote" +
-                   " where lote.id_producto = producto.id_producto and producto_salida.id_lote = lote.id_lote " + consultaStringProducto+ consultaStringDestino + consultaStringFechaSalida + consultaStringLote +
+                   " where lote.id_producto = producto.id_producto and producto_salida.id_lote = lote.id_lote " + consultaStringProducto + consultaStringFechaSalida + consultaStringLote +
                    " order by fecha DESC;";
 
             }
@@ -234,8 +243,14 @@ namespace EnoregV2.Dominio
                    " where lote.id_producto = producto.id_producto and producto_salida.id_lote = lote.id_lote " + consultaStringProducto+ consultaStringDestino + consultaStringFechaSalida + consultaStringDestino + consultaStringLote +
                    " order by fecha DESC;";
             }
+
+            paramFechaEntrada = consultaStringFechaEntrada;
+            paramFechaSalida = consultaStringFechaSalida;
+            registroFiltros = registro;
+            param = consultaStringProducto + consultaStringLote;
+            paramDestino = consultaStringDestino;
             return conexionDB.Select(sql);
-        }       
+        }
         /// <summary>
         /// Metodo para Cargar productos a la hora de tener una lista de productos
         /// </summary>
