@@ -36,7 +36,7 @@
 
         <StackPanel Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,20">
             <Button Name="btnAccept" Content="Aceptar" Width="75" Height="35" Margin="10,0" Click="btnAccept_Click"/>
-            <Button Name="btnCancel" Content="Cancelar" Width="75" Height="35" />
+            <Button Name="btnCancel" Content="Cancelar" Width="75" Height="35" Click="btnCancel_Click" />
         </StackPanel>
     </Grid>
 </Window>

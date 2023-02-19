@@ -29,6 +29,7 @@ using Image = System.Windows.Controls.Image;
 using Color = System.Windows.Media.Color;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using EnoregV2.Presentacion;
 
 namespace VentanaRegistros
 {
@@ -50,7 +51,6 @@ namespace VentanaRegistros
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            productoDAO = new ProductoDAO();
             CargarDataGrid();
             dtgprincipal.UpdateLayout();
             recorrerjlist();
@@ -237,7 +237,7 @@ namespace VentanaRegistros
 
         private void btnFiltros_Click(object sender, RoutedEventArgs e)
         {
-            Filtros v = new Filtros();
+            Filtros v = new Filtros(this, productoDAO);
             v.Show();
         }
 
@@ -328,7 +328,8 @@ namespace VentanaRegistros
 
         private void btnExportarInforme_Click(object sender, RoutedEventArgs e)
         {
-            recorrerjlist();
+            InformeRegistros registros= new InformeRegistros(productoDAO);
+            registros.Show();
         }
 
         private void dtgprincipal_Sorting(object sender, DataGridSortingEventArgs e)
@@ -356,5 +357,11 @@ namespace VentanaRegistros
                 recorrerjlist();
                 }
             }
+
+        private void btnInformeProducto_Click(object sender, RoutedEventArgs e)
+        {
+            InformeProductos informe = new InformeProductos();
+            informe.Show();
         }
+    }
 }

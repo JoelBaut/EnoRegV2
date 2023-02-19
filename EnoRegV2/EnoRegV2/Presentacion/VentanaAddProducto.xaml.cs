@@ -101,8 +101,7 @@ namespace EnoregV2
             {
                 Producto pe = null;
                 try
-                {
-                    
+                {                    
                     pe = new Producto(txbNombreProducto.Text, cbUnidades.SelectedValue.ToString(), 0, imagenBytes);                   
                     if (pe != null)
                     {
@@ -116,6 +115,11 @@ namespace EnoregV2
                 v.CargaDataGrid();
                 Close();                
             }
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
