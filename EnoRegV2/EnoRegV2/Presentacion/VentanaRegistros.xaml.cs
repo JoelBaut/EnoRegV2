@@ -29,6 +29,7 @@ using Image = System.Windows.Controls.Image;
 using Color = System.Windows.Media.Color;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using EnoregV2.Presentacion;
 
 namespace VentanaRegistros
 {
@@ -59,10 +60,22 @@ namespace VentanaRegistros
         /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            productoDAO = new ProductoDAO();
             CargarDataGrid();
             dtgprincipal.UpdateLayout();
             recorrerjlist();
+
+            //tipo de fuente
+            System.Drawing.Font tipoLetra = EnoregV2.Properties.Settings.Default.Font;
+            System.Windows.Media.FontFamily tipoFuente = new System.Windows.Media.FontFamily(tipoLetra.Name);
+
+            //fondo
+            System.Drawing.Color fondo = EnoregV2.Properties.Settings.Default.ColorFondo;
+            System.Windows.Media.Brush brushF = new SolidColorBrush
+                (System.Windows.Media.Color.FromArgb
+                (fondo.A, fondo.R, fondo.G, fondo.B));
+
+            this.FontFamily = tipoFuente;
+            this.Background = brushF;
         }
 
         /// <summary>
@@ -149,6 +162,8 @@ namespace VentanaRegistros
 
             btnRegistro.IsEnabled= true;
             btnProductos.IsEnabled = false;
+
+            CargaDataGrid();
         }
 
         /// <summary>
@@ -265,7 +280,7 @@ namespace VentanaRegistros
         /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnFiltros_Click(object sender, RoutedEventArgs e)
         {
-            Filtros v = new Filtros();
+            Filtros v = new Filtros(this, productoDAO);
             v.Show();
         }
 
@@ -403,7 +418,8 @@ namespace VentanaRegistros
         /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnExportarInforme_Click(object sender, RoutedEventArgs e)
         {
-            recorrerjlist();
+            InformeRegistros registros= new InformeRegistros(productoDAO);
+            registros.Show();
         }
 
         private void dtgprincipal_Sorting(object sender, DataGridSortingEventArgs e)
@@ -431,5 +447,11 @@ namespace VentanaRegistros
                 recorrerjlist();
                 }
             }
+
+        private void btnInformeProducto_Click(object sender, RoutedEventArgs e)
+        {
+            InformeProductos informe = new InformeProductos();
+            informe.Show();
         }
+    }
 }

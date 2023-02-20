@@ -260,7 +260,11 @@ namespace EnoReV2
                 loteDao.InsertarSalida(s,liquidar);
 
                 v.CargarDataGrid();
+               // v.CargaDataGrid();
+
                 v.dtgprincipal.UpdateLayout();
+             //   v.dtgProductos.UpdateLayout();
+
                 v.recorrerjlist();
 
                 MessageBox.Show(mensaje + ".", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Information);
