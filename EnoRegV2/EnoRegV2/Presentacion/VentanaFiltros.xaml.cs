@@ -24,9 +24,15 @@ namespace EnoregV2
     /// </summary>
     public partial class Filtros : Window
     {
+        //declaracion de variables
         private ProductoDAO productoDAO;
         private VentanaRegistro ventanaRegistro;
 
+        /// <summary>
+        /// Constructor con parametros de la ventana Filtros <see cref="Filtros"/> class.
+        /// </summary>
+        /// <param name="ventanaRegistro"></param>
+        /// <param name="productoDAO"></param>
         public Filtros(VentanaRegistro ventanaRegistro, ProductoDAO productoDAO)
         {
             InitializeComponent();
@@ -38,6 +44,10 @@ namespace EnoregV2
             dpFechafinal.SelectedDate = new DateTime(2050, 1, 1);
         }
 
+        /// <summary>
+        /// Metodo cargarComboRegistros, en el cuál se insertan 
+        /// los tipos entradas, salidas y entradas/salidas
+        /// </summary>
         private void cargarComboRegistros()
         {
             cmbEntradaSalida.Items.Insert(0, new { id = 0, nombre = "Entradas/Salidas" });
@@ -49,6 +59,10 @@ namespace EnoregV2
             cmbEntradaSalida.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Metodo cargarComboProductos, el cual carga el combo
+        /// con los productos que hay disponibles en la base de datos
+        /// </summary>
         private void cargarComboProductos()
         {
             MySqlDataReader dr = productoDAO.Cargarproductos();
@@ -68,8 +82,16 @@ namespace EnoregV2
             cmbProducto.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Evento onClick del boton Aceptar, el cual confirmara
+        /// los datos seleccionados en la ventana y cargara esos datos
+        /// y los mostrara en el data table 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnAccept_Click(object sender, RoutedEventArgs e)
         {
+            //declaracion de variables
             string fecha = null;
             string Fechafinal = null;
             // obetener fecha
@@ -84,6 +106,7 @@ namespace EnoregV2
                 Fechafinal = selectedDateCaducidad.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
             }
 
+            //se cargan los datos en el data table
             DataTable dt = new DataTable();
             dt.Load(productoDAO.CargarFiltro(cmbEntradaSalida.Text, fecha, Fechafinal, cmbProducto.Text, txtDestino.Text, txtLote.Text));
             ventanaRegistro.dtgprincipal.ItemsSource = dt.DefaultView;
@@ -93,11 +116,23 @@ namespace EnoregV2
             this.Close();
         }
 
+        /// <summary>
+        /// Evento onClick del boton Cancelar, el cual cerrara la ventana
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Evento TextChanged del txtDestino, donde si el campo no esta vacío,
+        /// indicamos que se filtran por salidas y si el campo esta rellenado,
+        /// filtramos por entradas y salidas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="TextChangedEventArgs"/></param>
         private void txtDestino_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!txtDestino.Text.Equals(""))

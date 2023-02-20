@@ -28,10 +28,16 @@ namespace EnoregV2
     /// </summary>
     public partial class VentanaAddProducto : Window
     {
+        //declaracion de variables
         ProductoDAO p = null;
         MySqlDataReader dr;
         VentanaRegistro v = null;
         byte[] imagenBytes = null;
+
+        /// <summary>
+        /// Constructor de VentanaAddProductos <see cref="VentanaAddProducto"/> class.
+        /// </summary>
+        /// <param name="a"></param>
         public VentanaAddProducto(VentanaRegistro a)
         {
             InitializeComponent();
@@ -47,6 +53,12 @@ namespace EnoregV2
             v = a;
         }
 
+        /// <summary>
+        /// Evento onClick del boton Buscar Imagen, donde añadimos una imagen
+        /// al nuevo producto que vamos a insertar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnimagen_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -71,19 +83,33 @@ namespace EnoregV2
 
         }
 
+        /// <summary>
+        /// Evento onClick del boton Aceptar añadir producto, donde revisamos
+        /// que los campos se rellenen correctamente y finalmente insertamos 
+        /// esos datos del nuevo producto en la base de datos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnAccept_Click(object sender, RoutedEventArgs e)
         {
+            //declaracion de variables
             String mensaje = "";
             Boolean cumple = false;
+
+            //revisamos que rellena el campo con un nombre
             if (txbNombreProducto.Text == "") {
                 mensaje = "Introduce un nombre de producto correcto"; 
                 cumple = true;
             }
+
+            //si el nombre ya existe en la base de datos, lo indicamos
             if (p.CompruebaProductos(txbNombreProducto.Text)) 
             {
                 mensaje = "Introduce un nombre que no exista";
                 cumple = true;
             }
+
+            //revisamo que introduce la unidad del producto
             if (cbUnidades.SelectedIndex ==  0)
             {
                 if (mensaje.Length > 10) 
@@ -93,10 +119,14 @@ namespace EnoregV2
                 mensaje += "Selecciona una Unidad";
                 cumple = true;
             }
+
+            //indicamos el error si lo hubiese
             if (cumple)
             {
                 MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            //sino, insertamos el nuevo producto en la base de datos
             else 
             {
                 Producto pe = null;
