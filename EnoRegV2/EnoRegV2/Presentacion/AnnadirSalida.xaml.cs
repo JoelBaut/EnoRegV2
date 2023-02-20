@@ -31,16 +31,20 @@ namespace EnoReV2
         LoteDao loteDao = new LoteDao();
         Lote l = null;
         VentanaRegistro v = null;
+        string fecha;
+
 
         /// <summary>
         /// Constructor de la clase AnnadirSalida <see cref="AnnadirSalida"/> class.
         /// </summary>
         /// <param name="vr">The vr.</param>
+
         public AnnadirSalida(VentanaRegistro vr)
         {
             InitializeComponent();
             CargarComboProductos();
             v = vr;
+            dtpFechaSalida.SelectedDate = DateTime.Now;
         }
 
         /// <summary>
@@ -200,8 +204,7 @@ namespace EnoReV2
                 cmbLoteSalida.Background = Brushes.White;
             }
 
-            //revisamos que rellena la cantidad con solo numeros
-            if (string.IsNullOrEmpty(txbCantidadSalida.Text))
+            if (string.IsNullOrEmpty(txbCantidadSalida.Text) || !int.TryParse(txbCantidadSalida.Text, out int cant) || cant < 1)
             {
                 if (chbLiquidar.IsChecked == false) {
                     if (mensaje.Length > 34)
@@ -254,7 +257,12 @@ namespace EnoReV2
                 // obtener stock del producto
                 Double stockProducto = productoDao.ObtenerStockProducto(cmbProductoSalida.Text);
 
-                Salida s = new Salida(dtpFechaSalida.Text,l,Double.Parse(txbCantidadSalida.Text), txbObservacionesSalida.Text,stockLote,stockProducto, txbDestino.Text);
+                // obtener Fecha
+                DateTime? selectedDate = dtpFechaSalida.SelectedDate;
+                fecha = selectedDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+
+
+                Salida s = new Salida(fecha,l,Double.Parse(txbCantidadSalida.Text), txbObservacionesSalida.Text,stockLote,stockProducto, txbDestino.Text);
 
                 Boolean liquidar = (bool)chbLiquidar.IsChecked;
                 loteDao.InsertarSalida(s,liquidar);

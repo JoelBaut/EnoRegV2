@@ -38,6 +38,8 @@ namespace EnoReV2
             InitializeComponent();
             CargarComboProductos();
             v = vr;
+            dtpFechaEntrada.SelectedDate = DateTime.Now;
+            dtpCaducidad.SelectedDate = DateTime.Now.AddMonths(1);
         }
 
         /// <summary>
@@ -122,8 +124,7 @@ namespace EnoReV2
                 txbLoteEntrada.Background = Brushes.White;
             }
 
-            //revisamos que se rellena el campo cantidad con numeros
-            if (string.IsNullOrEmpty(txbCantidadEntrada.Text))
+            if (string.IsNullOrEmpty(txbCantidadEntrada.Text) || !int.TryParse(txbCantidadEntrada.Text, out int cant) || cant < 1)
             {
                 if (mensaje.Length > 34)
                 {
