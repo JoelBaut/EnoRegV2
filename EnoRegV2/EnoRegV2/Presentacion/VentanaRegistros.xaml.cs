@@ -24,13 +24,12 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 using Color = System.Windows.Media.Color;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using EnoregV2.Presentacion;
 
+using EnoregV2.Presentacion;
 namespace VentanaRegistros
 {
     /// <summary>
@@ -39,7 +38,7 @@ namespace VentanaRegistros
     /// 
     public partial class VentanaRegistro : Window
     {
-
+        private bool closeConfirmed = false;
         ProductoDAO productoDAO = null;
         bool isSorting;
         public VentanaRegistro()
@@ -47,6 +46,38 @@ namespace VentanaRegistros
             InitializeComponent();
             btnRegistro.IsEnabled = false;
             productoDAO = new ProductoDAO();
+        }
+
+        // commando
+        private void OnClickSalir(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!closeConfirmed)
+            {
+                MessageBoxResult result = MessageBox.Show("¿Estás seguro de que deseas salir?", "Salir", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    closeConfirmed = true;
+                    Close();
+                }
+            }
+            else
+            {
+                Application.Current.Shutdown();
+            }
+        }
+
+        private void OnCanExecuteCerrar(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (!closeConfirmed)
+            {
+                e.Cancel = true;
+                OnClickSalir(sender, null);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
