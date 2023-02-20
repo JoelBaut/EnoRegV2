@@ -223,6 +223,13 @@ namespace VentanaRegistros
             }
         }
 
+        /// <summary>
+        /// Metodo CambiarFormatoBoton, el cual elimina el nombre de los
+        /// botones y solo muestra el icono cuando el grid splitter 
+        /// se cierra lo suficiente para que solo se muestre la imagen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="SizeChangedEventArgs"/></param>
         private void CambiarFormatoBoton(object sender, SizeChangedEventArgs e)
         {
             if (btnEntrada.ActualWidth < ActualWidth * 0.08)
