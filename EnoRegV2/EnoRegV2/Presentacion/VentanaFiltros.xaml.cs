@@ -27,10 +27,10 @@ namespace EnoregV2
         private ProductoDAO productoDAO;
         private VentanaRegistro ventanaRegistro;
 
-        public Filtros(VentanaRegistro ventanaRegistro)
+        public Filtros(VentanaRegistro ventanaRegistro, ProductoDAO productoDAO)
         {
             InitializeComponent();
-            productoDAO = new ProductoDAO();
+            this.productoDAO = productoDAO;
             this.ventanaRegistro = ventanaRegistro;
             cargarComboProductos();
             cargarComboRegistros();
