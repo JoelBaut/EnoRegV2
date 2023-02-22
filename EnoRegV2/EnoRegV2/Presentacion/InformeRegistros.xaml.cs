@@ -1,5 +1,6 @@
 ﻿using EnoregV2.Dominio;
 using Microsoft.Win32;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace EnoregV2.Presentacion
     public partial class InformeRegistros : Window
     {
         ProductoDAO productoDAO;
+        CrystalReport5_EntradaSalida crystalReport5= null;
 
         /// <summary>
         /// Constructor de la ventana InformeRegistros <see cref="InformeRegistros"/> class.
@@ -42,12 +44,19 @@ namespace EnoregV2.Presentacion
         /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            MySqlConnection conn = null;
+            conn = new MySqlConnection(Properties.Settings.Default.ConexionDB);
             if (productoDAO.RegistroFiltros.Equals("Entradas/Salidas"))
             {
-                CrystalReport5_EntradaSalida crystalReport5 = new CrystalReport5_EntradaSalida();
+                crystalReport5 = new CrystalReport5_EntradaSalida();
+                crystalReport5.Refresh();
+                
                 crystalReport5.SetParameterValue("param_FechaEntrada", productoDAO.ParamFechaEntrada);
                 crystalReport5.SetParameterValue("param_LoteProducto", productoDAO.Param);
                 crystalReport5.SetParameterValue("param_FechaSalida", productoDAO.ParamFechaSalida);
+
+                // crystalReport5.DataSourceConnections[0].SetConnection(conn.get);
+                
                 reportViewer.ViewerCore.ReportSource = crystalReport5;
 
             }
