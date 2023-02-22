@@ -78,17 +78,6 @@ namespace EnoReV2
             double cantidaNumerico = 0;
             string mensaje = "Tienes que rellenar o seleccionar:";
 
-            //revisamos que introduce la fecha de entrada 
-            if (dtpFechaEntrada.SelectedDate == DateTime.Now.Date)
-            {
-                if (mensaje.Length > 34)
-                {
-                    mensaje += ",";
-                }
-                mensaje += " la fecha de entrada";
-                dtpFechaEntrada.Focus();
-                valor = true;
-            }
 
             //revisamos que seleccionen un producto del combo
             if (cmbProductoEntrada.SelectedIndex.Equals(-1))
@@ -148,18 +137,6 @@ namespace EnoReV2
                 {
                     txbCantidadEntrada.Background = Brushes.White;
                 }
-            }
-
-            //revisamos que introduzca la fecha de caducidad
-            if (dtpCaducidad.SelectedDate == DateTime.Now.Date)
-            {
-                if (mensaje.Length > 34)
-                {
-                    mensaje += ",";
-                }
-                mensaje += " la fecha de caducidad";
-                dtpCaducidad.Focus();
-                valor = true;
             }
 
             //revisamos que rellena el campo del proveedor

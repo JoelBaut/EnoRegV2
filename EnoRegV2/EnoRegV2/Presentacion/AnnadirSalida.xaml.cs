@@ -158,18 +158,6 @@ namespace EnoReV2
             double cantidaNumerico = 0;
             string cantidad = "";
 
-            //revisamos que seleccione la fecha de salida
-            if (dtpFechaSalida.SelectedDate == DateTime.Now.Date)
-            {
-                if (mensaje.Length > 34)
-                {
-                    mensaje += ",";
-                }
-                mensaje += " la fecha de salida";
-                dtpFechaSalida.Focus();
-                valor = true;
-            }
-
             //revisamos que seleccione un elemento del combo de productos
             if (cmbProductoSalida.SelectedIndex.Equals(-1))
             {
@@ -261,8 +249,8 @@ namespace EnoReV2
                 DateTime? selectedDate = dtpFechaSalida.SelectedDate;
                 fecha = selectedDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
-
-                Salida s = new Salida(fecha,l,Double.Parse(txbCantidadSalida.Text), txbObservacionesSalida.Text,stockLote,stockProducto, txbDestino.Text);
+                Double stockSalida = Double.Parse(txbCantidadSalida.Text);
+                Salida s = new Salida(fecha,l,stockSalida, txbObservacionesSalida.Text,stockLote-stockSalida,stockProducto-stockSalida, txbDestino.Text);
 
                 Boolean liquidar = (bool)chbLiquidar.IsChecked;
                 loteDao.InsertarSalida(s,liquidar);

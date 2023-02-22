@@ -65,6 +65,8 @@ namespace EnoregV2.Dominio
             if (liquidar)
             {
                 s.Cantidad = s.CantidadLote;
+                s.CantidadLote = 0;
+                s.CantidadProducto-=s.Cantidad;
             }
                 sql = ("insert into producto_salida values(null," + idLote + ",'" + s.Fecha + "'," +
                 "" + s.Cantidad + "," + s.CantidadLote + "," + s.CantidadProducto
@@ -76,8 +78,8 @@ namespace EnoregV2.Dominio
 
             // actualizar stock de  producto y lote
 
-            String actualizarLote = "update lote set stock = " + (s.CantidadLote - s.Cantidad) + " where id_lote = " + idLote;
-            String actualizarProducto = "update producto set stock = " + (s.CantidadProducto - s.Cantidad) + " where id_producto = " + s.Lote.IdProducto;
+            String actualizarLote = "update lote set stock = " + s.CantidadLote+ " where id_lote = " + idLote;
+            String actualizarProducto = "update producto set stock = " + s.CantidadProducto + " where id_producto = " + s.Lote.IdProducto;
             conexionDB.Update(actualizarLote);
             conexionDB.Update(actualizarProducto);
         }
