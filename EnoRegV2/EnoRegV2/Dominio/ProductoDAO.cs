@@ -148,7 +148,7 @@ namespace EnoregV2.Dominio
         }
         public MySqlDataReader CargarLotes(Producto p)
         {
-            string sql = "Select id_lote ID,id_producto 'ID Producto',lote 'Numero Lote',stock 'Stock Lote' from lote where id_producto='" + p.Id + "'";
+            string sql = "Select id_lote ID,id_producto 'ID Producto',lote 'Numero Lote',stock 'Stock Lote' from lote where id_producto = (select id_producto from producto where nombre= '" + p.Nombre + "')";
             return conexionDB.Select(sql);
 
         }
