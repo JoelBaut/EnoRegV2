@@ -8,16 +8,16 @@
         Title="Entradas" Height="550" Width="395">
     <Grid>
         <Grid.RowDefinitions>
-        <RowDefinition Height="30"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="1.5*"/>
-        <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.1*"/>
@@ -28,11 +28,11 @@
         <Label Grid.Row="1" Grid.Column="1" x:Name="lblFechaEntrada" Content="Fecha:" HorizontalAlignment="Right" Margin="0,10" VerticalAlignment="Top"/>
         <DatePicker Grid.Row="1" Grid.Column="2" x:Name="dtpFechaEntrada" Margin="0,10"/>
         <Label Grid.Row="2" Grid.Column="1" x:Name="lblProductoEntrada" Content="Producto:" HorizontalAlignment="Right" Margin="0,10" VerticalAlignment="Top"/>
-        <ComboBox Grid.Row="2" Grid.Column="2" x:Name="cmbProductoEntrada" Height="25" Margin="0,10"/>
+        <ComboBox Grid.Row="2" Grid.Column="2" x:Name="cmbProductoEntrada" Height="25" Margin="0,10" SelectionChanged="cmbProductoEntrada_SelectionChanged"/>
         <Label Grid.Row="3" Grid.Column="1" x:Name="lblLoteEntrada" Content="Lote:" HorizontalAlignment="Right" Margin="0,10" VerticalAlignment="Top"/>
         <TextBox Grid.Row="3" Grid.Column="2" x:Name="txbLoteEntrada" Margin="0,10"/>
         <Label Grid.Row="4" Grid.Column="1" x:Name="lblCantidadEntrada" Content="Cantidad:" HorizontalAlignment="Right" Margin="0,10" VerticalAlignment="Top"/>
-        <TextBox Grid.Row="4" Grid.Column="2" x:Name="txbCantidadEntrada" Height="26" Margin="0,10" TextWrapping="Wrap" Text=""/>
+        <TextBox Grid.Row="4" Grid.Column="1" x:Name="txbCantidadEntrada" Height="26" Margin="89,10,85,10" TextWrapping="Wrap" Text="" Grid.ColumnSpan="2"/>
         <Label Grid.Row="5" Grid.Column="1" x:Name="lblCaducidad" Content="Caducidad:" HorizontalAlignment="Right" Margin="0,10" VerticalAlignment="Top"/>
         <DatePicker Grid.Row="5" Grid.Column="2" x:Name="dtpCaducidad" Margin="0,10"/>
         <Label Grid.Row="6" Grid.Column="1" x:Name="lblProveedor" Content="Proveedor:" HorizontalAlignment="Right" Margin="0,10" />
@@ -45,5 +45,6 @@
             <Button x:Name="btnAceptarEntrada" Content="Aceptar" Margin="10,0" Width="75" Height="35" Click="btnAceptarEntrada_Click"/>
             <Button x:Name="btnCancelarentrada" Content="Cancelar" Width="75" Height="35" Click="btnCancelarentrada_Click"/>
         </StackPanel>
+        <Label x:Name="lblUnidad" Grid.Column="2" Content="" HorizontalAlignment="Left" Margin="146,0,0,0" Grid.Row="4" VerticalAlignment="Center"/>
     </Grid>
 </Window>
