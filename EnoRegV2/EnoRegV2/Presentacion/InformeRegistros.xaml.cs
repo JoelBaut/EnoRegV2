@@ -55,10 +55,6 @@ namespace EnoregV2.Presentacion
                 crystalReport4.SetParameterValue("param_Fecha", productoDAO.ParamFechaSalida);
                 reportViewer.ViewerCore.ReportSource = crystalReport4;
             }
-
-
-
-            MessageBox.Show(productoDAO.RegistroFiltros +", "+ productoDAO.ParamFechaSalida + ", "+ productoDAO.Param + ", " + productoDAO.ParamDestino + ", " + productoDAO.ParamFechaEntrada );
         }
     }
 }
