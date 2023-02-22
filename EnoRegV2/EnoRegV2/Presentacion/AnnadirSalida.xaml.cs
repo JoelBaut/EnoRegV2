@@ -32,6 +32,7 @@ namespace EnoReV2
         Lote l = null;
         VentanaRegistro v = null;
         string fecha;
+        String unidad = null;
 
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace EnoReV2
                         cantidadRestante = 0;
                     }
                     MySqlDataReader dr = null;
-                    String unidad=null;
+                    
                     dr = productoDao.ObtenerUnidad(cmbProductoSalida.Text);
                     while (dr.Read())
                     {
@@ -291,8 +292,21 @@ namespace EnoReV2
         /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void chbLiquidar_Checked(object sender, RoutedEventArgs e)
         {
-            txbCantidadSalida.IsEnabled= false;
-            lblCantidadRestante.Content = "";
+            if (txbCantidadSalida.IsEnabled == true)
+            {
+                txbCantidadSalida.IsEnabled = false;
+                lblCantidadRestante.Content = "";
+            }
+            else {
+                txbCantidadSalida.IsEnabled = true;
+                lblCantidadRestante.Content = cantidadRestante;
+            }          
+        }
+
+        private void chbLiquidar_Unchecked(object sender, RoutedEventArgs e)
+        {
+            txbCantidadSalida.IsEnabled = true;
+            lblCantidadRestante.Content = "Cantidad Disponible: " + cantidadRestante.ToString() + "" + unidad;
         }
     }
 }
