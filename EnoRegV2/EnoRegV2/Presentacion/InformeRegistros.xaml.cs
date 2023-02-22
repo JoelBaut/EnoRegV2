@@ -22,6 +22,11 @@ namespace EnoregV2.Presentacion
     public partial class InformeRegistros : Window
     {
         ProductoDAO productoDAO;
+
+        /// <summary>
+        /// Constructor de la ventana InformeRegistros <see cref="InformeRegistros"/> class.
+        /// </summary>
+        /// <param name="productoDAO"></param>
         public InformeRegistros(ProductoDAO productoDAO)
         {
             this.productoDAO = productoDAO;
@@ -29,6 +34,12 @@ namespace EnoregV2.Presentacion
             reportViewer.Owner = this;
         }
 
+        /// <summary>
+        /// Evento Loaded de la ventana, el cual carga el informe 
+        /// segun el filtro que tengamos seleccionado(Entradas/Salidas o Entradas o Salidas)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (productoDAO.RegistroFiltros.Equals("Entradas/Salidas"))
@@ -57,7 +68,7 @@ namespace EnoregV2.Presentacion
             }
 
 
-
+            //se muestran los datos en una ventana emergente
             MessageBox.Show(productoDAO.RegistroFiltros +", "+ productoDAO.ParamFechaSalida + ", "+ productoDAO.Param + ", " + productoDAO.ParamDestino + ", " + productoDAO.ParamFechaEntrada );
         }
     }

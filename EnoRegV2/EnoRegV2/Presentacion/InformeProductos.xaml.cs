@@ -21,13 +21,22 @@ namespace EnoregV2.Presentacion
     /// </summary>
     public partial class InformeProductos : Window
     {
+        /// <summary>
+        /// Constructor de la ventana InformeProductos <see cref="InformeProductos"/> class.
+        /// </summary>
         public InformeProductos()
         {
             InitializeComponent();
             reportViewer.Owner = this;
         }
+
+        /// <summary>
+        /// Metodo cargarCombo, el cual cargara el nombre de los productos
+        /// disponibles en la base de datos en ese momento
+        /// </summary>
         private void cargarCombo()
         {
+            //declaracion de variables
             MySqlConnection dbconn = null;
             string server = "localhost";
             string database = "bodega_registro";
@@ -35,6 +44,7 @@ namespace EnoregV2.Presentacion
             string password = "";
             string connectionString = "SERVER=" + server + ";" + "DATABASE=" + database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
             dbconn = new MySqlConnection(connectionString);
+
             // Abrimos la conexión
             try
             {
@@ -75,11 +85,23 @@ namespace EnoregV2.Presentacion
             }
         }
 
+        /// <summary>
+        /// Evento Loaded de la ventana, el cual cargara el combo de productos 
+        /// al abrir la ventana
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             cargarCombo();            
         }
 
+        /// <summary>
+        /// Evento onClick del boton Cargar, el cual cargara el informe
+        /// segun el producto seleccionado en el combo
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnCargar_Click(object sender, RoutedEventArgs e)
         {
             if (cmbProductos.SelectedValue.ToString().Equals("0"))
