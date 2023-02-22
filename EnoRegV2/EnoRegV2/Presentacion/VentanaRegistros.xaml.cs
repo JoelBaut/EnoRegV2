@@ -38,15 +38,21 @@ namespace VentanaRegistros
     /// 
     public partial class VentanaRegistro : Window
     {
+        //declaracion de variables
         private bool closeConfirmed = false;
         ProductoDAO productoDAO = null;
         bool isSorting;
+
+        /// <summary>
+        /// Constructor de VentanaRegistro <see cref="VentanaRegistro"/> class.
+        /// </summary>
         public VentanaRegistro()
         {
             InitializeComponent();
             btnRegistro.IsEnabled = false;
             productoDAO = new ProductoDAO();
         }
+
 
         // commando
         private void OnClickSalir(object sender, ExecutedRoutedEventArgs e)
@@ -80,6 +86,12 @@ namespace VentanaRegistros
             }
         }
 
+        /// <summary>
+        /// Evento Loaded de la ventana de regsitros, donde cargamos y actualizamos el data grid principal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             CargarDataGrid();
@@ -100,6 +112,9 @@ namespace VentanaRegistros
             this.Background = brushF;
         }
 
+        /// <summary>
+        /// Metodo Recorrerjlists.
+        /// </summary>
         public void recorrerjlist()
         {
             MySqlDataReader dr;
@@ -149,6 +164,10 @@ namespace VentanaRegistros
             }
         }
 
+        /// <summary>
+        /// Metodo CargarDataGrid, donde cargamos los productos
+        /// en el data grid
+        /// </summary>
         public void CargarDataGrid()
         {
             // cargar datos 
@@ -160,6 +179,13 @@ namespace VentanaRegistros
                
         }
 
+        /// <summary>
+        /// Evento onClick del boton de productos, que ocultara los botones y 
+        /// data grid de los registros y mostraras los de productos. Tambien 
+        /// deshabilita el boton de productos y habilita el de registros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             gridRegistroBotones.Visibility = Visibility.Hidden;
@@ -174,6 +200,13 @@ namespace VentanaRegistros
             CargaDataGrid();
         }
 
+        /// <summary>
+        /// Evento onClick del boton de registros, que ocultara los botones y 
+        /// data grid de los productos y mostraras los de registros. Tambien 
+        /// deshabilita el boton de registros y habilita el de productos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             gridRegistroBotones.Visibility = Visibility.Visible;
@@ -185,6 +218,13 @@ namespace VentanaRegistros
             btnRegistro.IsEnabled = false;
             btnProductos.IsEnabled= true;
         }
+
+        /// <summary>
+        /// Evento del GridSplitter, que nos permitira moverlo 
+        /// el GridSplitter dentro de los limites marcados 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="MouseEventArgs"/></param>
         private void GridSplitter_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             GridSplitter splitter = sender as GridSplitter;
@@ -217,6 +257,13 @@ namespace VentanaRegistros
             }
         }
 
+        /// <summary>
+        /// Metodo CambiarFormatoBoton, el cual elimina el nombre de los
+        /// botones y solo muestra el icono cuando el grid splitter 
+        /// se cierra lo suficiente para que solo se muestre la imagen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="SizeChangedEventArgs"/></param>
         private void CambiarFormatoBoton(object sender, SizeChangedEventArgs e)
         {
             if (btnEntrada.ActualWidth < ActualWidth * 0.08)
@@ -266,18 +313,36 @@ namespace VentanaRegistros
             }
         }
 
+        /// <summary>
+        /// Evento onClick del boton de Filtros, el cual abrira
+        /// la ventana de filtros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnFiltros_Click(object sender, RoutedEventArgs e)
         {
             Filtros v = new Filtros(this, productoDAO);
             v.Show();
         }
 
+        /// <summary>
+        /// Evento onClick del boton de Entradas, el cual abrira
+        /// la ventana de entradas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnEntrada_Click(object sender, RoutedEventArgs e)
         {
             AnnadirEntrada en = new AnnadirEntrada(this);
             en.Show();
         }
 
+        /// <summary>
+        /// Evento onClick del boton de Salidas, el cual abrira
+        /// la ventana de salidas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnSalida_Click(object sender, RoutedEventArgs e)
         {
             AnnadirSalida sa = new AnnadirSalida(this);
@@ -285,26 +350,51 @@ namespace VentanaRegistros
 
         }
 
+        /// <summary>
+        /// Evento onClick del boton de Añadir Productos, el cual abrira
+        /// la ventana de añadir productos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnannadirProducto_Click(object sender, RoutedEventArgs e)
         {
             VentanaAddProducto ventanaAddProducto = new VentanaAddProducto(this);
             ventanaAddProducto.Show();
         }
 
-
+        /// <summary>
+        /// Evento Loaded del data grid de productos, donde 
+        /// cargaremos los datos de los productos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void dtgProductos_Loaded(object sender, RoutedEventArgs e)
         {
             CargaDataGrid();
         }
+
+        /// <summary>
+        /// Metodo CargaDataGrid, donde cargamos los productos disponibles
+        /// en la base de datos en un data table
+        /// </summary>
         public void CargaDataGrid() 
         {
             DataTable dt = new DataTable();
             dt.Load(productoDAO.CargarListaProductos());
             dtgProductos.ItemsSource = dt.DefaultView;
             productoDAO.cerrarConexion();
-        }        
+        }
+
+        /// <summary>
+        /// Evento de seleccion de elemento en el data grid de productos, que
+        /// cuando hacemos clic en unos de los productos, aparece su imagen asociada 
+        /// en la ventana
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="SelectionChangedEventArgs"/></param>
         private void dtgProductos_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
+            //declaracion de variables
             string text="";
             string ids = "";
             int row = dtgProductos.SelectedIndex;            
@@ -312,12 +402,16 @@ namespace VentanaRegistros
             text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
             ids= ((TextBlock)dtgProductos.Columns[0].GetCellContent(columna)).Text;
             int id = int.Parse(ids);
-            Producto pro = new Producto(id,text);            
+            Producto pro = new Producto(id,text);     
+            
+            //si la fila seleccionada esta vacia, lo indicamos
             if (pro == null)
             {
                 MessageBox.Show("La fila seleccionada no es un producto válido.");
                 return;
             }
+
+            //aqui cargamos la imagenes de los productos
             MySqlDataReader data = productoDAO.CargarImagen(pro);            
             if (data.Read())
             {
@@ -344,6 +438,7 @@ namespace VentanaRegistros
                 }
              
             }           
+            //se cargan los lotes y se muestran en el data table
             try
             {
                 DataTable dt = new DataTable();
@@ -356,7 +451,12 @@ namespace VentanaRegistros
                 
             }
     }
-
+        /// <summary>
+        /// Evento onClick del boton de exportar informe, el cual llama al 
+        /// metodo recorrerjlist
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void btnExportarInforme_Click(object sender, RoutedEventArgs e)
         {
             InformeRegistros registros= new InformeRegistros(productoDAO);

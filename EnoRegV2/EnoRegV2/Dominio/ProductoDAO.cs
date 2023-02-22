@@ -21,6 +21,7 @@ namespace EnoregV2.Dominio
     /// </summary>
     public class ProductoDAO
     {
+        //declaracion de variables
         ConexionDB conexionDB = new ConexionDB();
         String registroFiltros = "Entradas/Salidas";
         String param = "";
@@ -28,20 +29,30 @@ namespace EnoregV2.Dominio
         String paramFechaSalida = "";
         String paramDestino = "";
 
+        //getters & setters
         public string RegistroFiltros { get => registroFiltros; set => registroFiltros = value; }
         public string Param { get => param; set => param = value; }
         public string ParamFechaEntrada { get => paramFechaEntrada; set => paramFechaEntrada = value; }
         public string ParamFechaSalida { get => paramFechaSalida; set => paramFechaSalida = value; }
         public string ParamDestino { get => paramDestino; set => paramDestino = value; }
 
+        /// <summary>
+        /// Constructor vacio de la clase ProductoDAO <see cref="ProductoDAO"/> class.
+        /// </summary>
         public ProductoDAO()
         {
            
         }
+
+        /// <summary>
+        /// Metodo cerrarConexion, el cual cerrara la conexion
+        /// con la base de datos
+        /// </summary>
         public void cerrarConexion()
         {
             conexionDB.cerrarConexion();
         }
+
         /// <summary>
         /// Añadido el stock_lote y stock_cantidad
         /// </summary>
