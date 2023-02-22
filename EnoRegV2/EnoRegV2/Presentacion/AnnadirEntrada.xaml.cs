@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -228,6 +229,28 @@ namespace EnoReV2
         private void btnCancelarentrada_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void cmbProductoEntrada_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string n = "";
+            n = (sender as ComboBox).SelectedItem.ToString();
+
+            string patron = @"nombre\s*=\s*(\w+)";
+            Match match = Regex.Match(n, patron);
+            if (match.Success)
+            {
+                string nombreProducto = match.Groups[1].Value.Trim();
+                MySqlDataReader dr = null;
+                String unidad = "";
+
+                dr = productoDao.ObtenerUnidad(nombreProducto);
+                while (dr.Read())
+                {
+                    unidad = dr.GetString(0);
+                }
+                lblUnidad.Content = unidad;
+            }
         }
     }
 }
