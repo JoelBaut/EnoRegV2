@@ -214,13 +214,14 @@ namespace EnoReV2
                 {
                     fechaCaducidad = selectedDateCaducidad.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 }
+                double stockEntrada = Double.Parse(txbCantidadEntrada.Text);
                 // obtener stock del lote, si el lote  no existe se creara uno nuevo
                 Double stockLote = loteDao.ObtenerStockLote(lote);
                 if (stockLote == -1) {
                     Lote loteAInsertar = new Lote(txbLoteEntrada.Text,
                         Int32.Parse(cmbProductoEntrada.SelectedValue.ToString()),fechaCaducidad);
 
-                    loteDao.InsertarLote(loteAInsertar, Double.Parse(txbCantidadEntrada.Text));
+                    loteDao.InsertarLote(loteAInsertar, 0);
 
                     stockLote = 0;
                 }
@@ -228,10 +229,10 @@ namespace EnoReV2
                 Double stockProducto = productoDao.ObtenerStockProducto(cmbProductoEntrada.Text);
 
                 // crear entrada e insertarla
-                Entrada entrada = new Entrada(fecha,lote,
-                    Double.Parse(txbCantidadEntrada.Text
-                    ) 
-                    ,txbObservacionesEntrada.Text,stockLote,stockProducto,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
+                
+
+                Entrada entrada = new Entrada(fecha,lote,stockEntrada
+                    ,txbObservacionesEntrada.Text,stockLote+stockEntrada,stockProducto+stockEntrada,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
                
                 loteDao.InsertarEntrada(entrada);
                 v.CargarDataGrid();

@@ -105,8 +105,8 @@ namespace EnoregV2.Dominio
 
             // actualizar stock de  producto y lote
 
-            String actualizarLote = "update lote set stock = "+(e.Cantidad+e.CantidadLote)+" where id_lote = "+idLote;
-            String actualizarProducto = "update producto set stock = " + (e.Cantidad+e.CantidadProducto) + " where id_producto = " + e.Lote.IdProducto;
+            String actualizarLote = "update lote set stock = "+e.CantidadLote+" where id_lote = "+idLote;
+            String actualizarProducto = "update producto set stock = " + e.CantidadProducto + " where id_producto = " + e.Lote.IdProducto;
             conexionDB.Update(actualizarLote);
             conexionDB.Update(actualizarProducto);
         }
