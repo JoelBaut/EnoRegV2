@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -78,17 +79,6 @@ namespace EnoReV2
             double cantidaNumerico = 0;
             string mensaje = "Tienes que rellenar o seleccionar:";
 
-            //revisamos que introduce la fecha de entrada 
-            if (dtpFechaEntrada.SelectedDate == DateTime.Now.Date)
-            {
-                if (mensaje.Length > 34)
-                {
-                    mensaje += ",";
-                }
-                mensaje += " la fecha de entrada";
-                dtpFechaEntrada.Focus();
-                valor = true;
-            }
 
             //revisamos que seleccionen un producto del combo
             if (cmbProductoEntrada.SelectedIndex.Equals(-1))
@@ -150,18 +140,6 @@ namespace EnoReV2
                 }
             }
 
-            //revisamos que introduzca la fecha de caducidad
-            if (dtpCaducidad.SelectedDate == DateTime.Now.Date)
-            {
-                if (mensaje.Length > 34)
-                {
-                    mensaje += ",";
-                }
-                mensaje += " la fecha de caducidad";
-                dtpCaducidad.Focus();
-                valor = true;
-            }
-
             //revisamos que rellena el campo del proveedor
             if (string.IsNullOrEmpty(txbProveedor.Text))
             {
@@ -214,13 +192,14 @@ namespace EnoReV2
                 {
                     fechaCaducidad = selectedDateCaducidad.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 }
+                double stockEntrada = Double.Parse(txbCantidadEntrada.Text);
                 // obtener stock del lote, si el lote  no existe se creara uno nuevo
                 Double stockLote = loteDao.ObtenerStockLote(lote);
                 if (stockLote == -1) {
                     Lote loteAInsertar = new Lote(txbLoteEntrada.Text,
                         Int32.Parse(cmbProductoEntrada.SelectedValue.ToString()),fechaCaducidad);
 
-                    loteDao.InsertarLote(loteAInsertar, Double.Parse(txbCantidadEntrada.Text));
+                    loteDao.InsertarLote(loteAInsertar, 0);
 
                     stockLote = 0;
                 }
@@ -228,10 +207,10 @@ namespace EnoReV2
                 Double stockProducto = productoDao.ObtenerStockProducto(cmbProductoEntrada.Text);
 
                 // crear entrada e insertarla
-                Entrada entrada = new Entrada(fecha,lote,
-                    Double.Parse(txbCantidadEntrada.Text
-                    ) 
-                    ,txbObservacionesEntrada.Text,stockLote,stockProducto,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
+                
+
+                Entrada entrada = new Entrada(fecha,lote,stockEntrada
+                    ,txbObservacionesEntrada.Text,stockLote+stockEntrada,stockProducto+stockEntrada,txbProveedor.Text,fechaCaducidad,txbAlbaran.Text);
                
                 loteDao.InsertarEntrada(entrada);
                 v.CargarDataGrid();
@@ -250,6 +229,28 @@ namespace EnoReV2
         private void btnCancelarentrada_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void cmbProductoEntrada_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string n = "";
+            n = (sender as ComboBox).SelectedItem.ToString();
+
+            string patron = @"nombre\s*=\s*(\w+)";
+            Match match = Regex.Match(n, patron);
+            if (match.Success)
+            {
+                string nombreProducto = match.Groups[1].Value.Trim();
+                MySqlDataReader dr = null;
+                String unidad = "";
+
+                dr = productoDao.ObtenerUnidad(nombreProducto);
+                while (dr.Read())
+                {
+                    unidad = dr.GetString(0);
+                }
+                lblUnidad.Content = unidad;
+            }
         }
     }
 }

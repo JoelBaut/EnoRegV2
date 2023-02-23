@@ -209,14 +209,16 @@ namespace VentanaRegistros
         /// <param name="e"> <see cref="RoutedEventArgs"/></param>
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+           
+            
             gridRegistroBotones.Visibility = Visibility.Visible;
-            GridDtgdRegistro.Visibility= Visibility.Visible;
+            GridDtgdRegistro.Visibility = Visibility.Visible;
 
             gridProductoBotones.Visibility = Visibility.Hidden;
             GridDtgdProducto.Visibility = Visibility.Hidden;
 
             btnRegistro.IsEnabled = false;
-            btnProductos.IsEnabled= true;
+            btnProductos.IsEnabled = true;
         }
 
         /// <summary>
@@ -382,6 +384,7 @@ namespace VentanaRegistros
             DataTable dt = new DataTable();
             dt.Load(productoDAO.CargarListaProductos());
             dtgProductos.ItemsSource = dt.DefaultView;
+            dtgProductos.Columns[0].Visibility = System.Windows.Visibility.Hidden;
             productoDAO.cerrarConexion();
         }
 
@@ -396,12 +399,16 @@ namespace VentanaRegistros
         {
             //declaracion de variables
             string text="";
-            string ids = "";
             int row = dtgProductos.SelectedIndex;            
-            DataGridRow columna = (DataGridRow)dtgProductos.ItemContainerGenerator.ContainerFromIndex(row);                
-            text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
-            ids= ((TextBlock)dtgProductos.Columns[0].GetCellContent(columna)).Text;
-            int id = int.Parse(ids);
+            DataGridRow columna = (DataGridRow)dtgProductos.ItemContainerGenerator.ContainerFromIndex(row);
+            int id=0;
+            try
+            {
+                text = ((TextBlock)dtgProductos.Columns[1].GetCellContent(columna)).Text;
+            }
+            catch (ArgumentNullException) {
+                text = "";
+            }
             Producto pro = new Producto(id,text);     
             
             //si la fila seleccionada esta vacia, lo indicamos
@@ -445,6 +452,8 @@ namespace VentanaRegistros
                 dt.Load(productoDAO.CargarLotes(pro));
                 dtgLotes.ItemsSource = dt.DefaultView;
                 productoDAO.cerrarConexion();
+                dtgLotes.Columns[0].Visibility= System.Windows.Visibility.Hidden;
+                dtgLotes.Columns[1].Visibility = System.Windows.Visibility.Hidden;
             }
             catch (MySqlConversionException es)
             {

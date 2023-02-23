@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VentanaRegistros"
         mc:Ignorable="d"
-        Title="VentanaRegistro" Height="720" Width="1280" WindowState="Maximized" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="VentanaRegistro" Height="720" Width="1280" WindowState="Maximized" Loaded="Window_Loaded" Closing="Window_Closing" Icon="/Presentacion/logoDptoIndAli.jpg">
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close" Executed="OnClickSalir" CanExecute="OnCanExecuteCerrar" />
     </Window.CommandBindings>
