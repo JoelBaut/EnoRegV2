@@ -40,7 +40,11 @@
         <Label Grid.Row="5" Grid.Column="1" x:Name="lblCantidadSalida" Content="Cantidad:" HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Horizontal">
             <TextBox x:Name="txbCantidadSalida" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="106"/>
+<<<<<<< HEAD
             <CheckBox x:Name="chbLiquidar" Content="Liquidar" HorizontalAlignment="Left" Margin="10, 0" VerticalAlignment="Top" Height="26" Checked="chbLiquidar_Checked"/>
+=======
+            <CheckBox x:Name="chbLiquidar" Content="Liquidar" HorizontalAlignment="Left" Margin="10, 0" VerticalAlignment="Top" Height="26" Checked="chbLiquidar_Checked" Unchecked="chbLiquidar_Unchecked"/>
+>>>>>>> 1ff12ff7f6e04265dbbdbdfb7305aae15af63291
         </StackPanel>
         <Label Grid.Row="6" Grid.Column="1" x:Name="lblDestino" Content="Destino:" HorizontalAlignment="Right"  VerticalAlignment="Center" Margin="0,10"/>
         <TextBox Grid.Row="6" Grid.Column="2" x:Name="txbDestino" TextWrapping="Wrap" Text="" Margin="0,10"/>

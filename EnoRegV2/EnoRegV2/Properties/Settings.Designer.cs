@@ -38,6 +38,7 @@ namespace EnoregV2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+<<<<<<< HEAD
         [global::System.Configuration.DefaultSettingValueAttribute("Bahnschrift Light, 12pt")]
         public global::System.Drawing.Font Font {
             get {
@@ -62,6 +63,8 @@ namespace EnoregV2.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+=======
+>>>>>>> 1ff12ff7f6e04265dbbdbdfb7305aae15af63291
         [global::System.Configuration.DefaultSettingValueAttribute("HighlightText")]
         public global::System.Drawing.Color ColorFondo {
             get {
@@ -71,5 +74,20 @@ namespace EnoregV2.Properties {
                 this["ColorFondo"] = value;
             }
         }
+<<<<<<< HEAD
+=======
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Calibri, 12pt, style=Bold")]
+        public global::System.Drawing.Font Font {
+            get {
+                return ((global::System.Drawing.Font)(this["Font"]));
+            }
+            set {
+                this["Font"] = value;
+            }
+        }
+>>>>>>> 1ff12ff7f6e04265dbbdbdfb7305aae15af63291
     }
 }

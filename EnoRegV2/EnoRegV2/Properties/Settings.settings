@@ -5,6 +5,7 @@
     <Setting Name="ConexionDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">SERVER=localhost;DATABASE=bodega_registro;UID=root;PASSWORD=;POOLING=FALSE;convert zero datetime=True</Value>
     </Setting>
+<<<<<<< HEAD
     <Setting Name="Font" Type="System.Drawing.Font" Scope="User">
       <Value Profile="(Default)">Bahnschrift Light, 12pt</Value>
     </Setting>
@@ -13,6 +14,13 @@
     </Setting>
     <Setting Name="ColorFondo" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">HighlightText</Value>
+=======
+    <Setting Name="ColorFondo" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">HighlightText</Value>
+    </Setting>
+    <Setting Name="Font" Type="System.Drawing.Font" Scope="User">
+      <Value Profile="(Default)">Calibri, 12pt, style=Bold</Value>
+>>>>>>> 1ff12ff7f6e04265dbbdbdfb7305aae15af63291
     </Setting>
   </Settings>
 </SettingsFile>
