@@ -111,18 +111,23 @@ namespace EnoReV2
         /// <param name="e"> <see cref="SelectionChangedEventArgs"/></param>
         private void cmbLoteSalida_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            string namePart = null;
             try {
                 string codigoLote = "";
                 codigoLote =  (sender as ComboBox).SelectedItem.ToString();
+               
+                string separator = "nombre = ";
 
-                string patron = @"nombre\s*=\s*(\w+)";
-                Match match = Regex.Match(codigoLote, patron);
-                if (match.Success)
+                int separatorIndex = codigoLote.IndexOf(separator);
+                if (separatorIndex >= 0)
                 {
-                    string cod = match.Groups[1].Value.Trim();
-                    String value = cmbProductoSalida.SelectedValue.ToString();
+                    namePart = codigoLote.Substring((separatorIndex+9), codigoLote.Length - (separatorIndex + 11));
 
-                    l = new Lote(cod, Int32.Parse(value));
+                }
+
+                     string cod = namePart;
+                    String value = cmbProductoSalida.SelectedValue.ToString();
+                l = new Lote(cod, Int32.Parse(value));
                     cantidadRestante = loteDao.ObtenerStockLote(l);
                     if (cantidadRestante == -1)
                     {
@@ -136,7 +141,6 @@ namespace EnoReV2
                         unidad= dr.GetString(0);
                     }
                     lblCantidadRestante.Content = "Cantidad Disponible: " + cantidadRestante.ToString()+""+unidad;
-                }
                
             }  catch(Exception ex)
             {
