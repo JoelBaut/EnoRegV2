@@ -64,13 +64,16 @@ namespace VentanaRegistros
                 if (result == MessageBoxResult.Yes)
                 {
                     closeConfirmed = true;
-                    Close();
+                    try
+                    {
+                        Application.Current.Shutdown();
+                    }
+                    catch { 
+                    
+                    }      
                 }
             }
-            else
-            {
-                Application.Current.Shutdown();
-            }
+
         }
 
         private void OnCanExecuteCerrar(object sender, CanExecuteRoutedEventArgs e)

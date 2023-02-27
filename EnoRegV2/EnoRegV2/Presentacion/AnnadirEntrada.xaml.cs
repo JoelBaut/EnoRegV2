@@ -237,10 +237,11 @@ namespace EnoReV2
             n = (sender as ComboBox).SelectedItem.ToString();
 
             string patron = @"nombre\s*=\s*(\w+)";
+            
             Match match = Regex.Match(n, patron);
             if (match.Success)
             {
-                string nombreProducto = match.Groups[1].Value.Trim();
+                string nombreProducto = match.Groups[1].Value.Trim();       
                 MySqlDataReader dr = null;
                 String unidad = "";
 
